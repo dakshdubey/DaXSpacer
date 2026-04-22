@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #000000;
+  --foreground: #ffffff;
+  --accent-da: #ffffff;
+  --accent-spacer: #00f3ff;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: 'Inter', system-ui, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .glow-da:hover {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  }
+
+  .glow-spacer:hover {
+    text-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+  }
+}
+
+canvas {
+  display: block;
+}
