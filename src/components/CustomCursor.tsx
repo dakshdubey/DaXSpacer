@@ -4,12 +4,10 @@ import { useEffect, useRef } from 'react';
 
 export default function CustomCursor() {
     const followerRef = useRef<HTMLDivElement>(null);
-    const dotRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const follower = followerRef.current;
-        const dot = dotRef.current;
-        if (!follower || !dot) return;
+        if (!follower) return;
 
         let mouseX = -100, mouseY = -100;
         let followX = -100, followY = -100;
@@ -45,21 +43,21 @@ export default function CustomCursor() {
         const loop = () => {
             rafId = requestAnimationFrame(loop);
 
-            // Dot — instant
-            dot.style.left = `${mouseX}px`;
-            dot.style.top = `${mouseY}px`;
-
             // Follower — lerp
             followX += (mouseX - followX) * EASE;
             followY += (mouseY - followY) * EASE;
             follower.style.left = `${followX}px`;
             follower.style.top = `${followY}px`;
 
-            // Hover scale
+            // Hover scale & difference effect
             const scale = isHover ? 3 : 1;
             follower.style.transform = `translate(-50%, -50%) scale(${scale})`;
-            follower.style.background = isHover ? 'rgba(255,255,255,0.1)' : 'white';
-            follower.style.border = isHover ? '1px solid white' : 'none';
+            // Keep background white so difference mode actually inverts underlying text
+            follower.style.background = 'white';
+            follower.style.border = 'none';
+            // Only apply difference blend mode on hover, or always depending on preference.
+            // Let's keep it always on so it blends nicely, but on hover it covers text.
+            follower.style.mixBlendMode = 'difference';
         };
         loop();
 
@@ -73,7 +71,6 @@ export default function CustomCursor() {
 
     return (
         <>
-            {/* Follower — white filled circle, lerps behind */}
             <div
                 ref={followerRef}
                 style={{
@@ -82,26 +79,12 @@ export default function CustomCursor() {
                     height: 20,
                     borderRadius: '50%',
                     background: 'white',
+                    mixBlendMode: 'difference',
                     pointerEvents: 'none',
                     zIndex: 999999,
                     transform: 'translate(-50%, -50%)',
-                    transition: 'background 0.2s, border 0.2s',
+                    transition: 'background 0.2s, border 0.2s, transform 0.2s',
                     willChange: 'left, top, transform',
-                }}
-            />
-            {/* Dot — snaps instantly */}
-            <div
-                ref={dotRef}
-                style={{
-                    position: 'fixed',
-                    width: 5,
-                    height: 5,
-                    borderRadius: '50%',
-                    background: 'rgba(0,0,0,0.8)',
-                    pointerEvents: 'none',
-                    zIndex: 9999999,
-                    transform: 'translate(-50%, -50%)',
-                    willChange: 'left, top',
                 }}
             />
         </>

@@ -3,8 +3,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
-// Royalty-free forest ambient sound (CC0 - freesound.org / pixabay)
-const FOREST_SOUND_URL = 'https://cdn.pixabay.com/audio/2022/03/15/audio_8cb749afb6.mp3';
+// Local nature sound (birds & water flow)
+const NATURE_SOUND_URL = '/assets/nature.mp3';
 
 export default function SoundToggle() {
     const [muted, setMuted] = useState(true);
@@ -12,7 +12,7 @@ export default function SoundToggle() {
 
     // Create audio element once on mount
     useEffect(() => {
-        const audio = new Audio(FOREST_SOUND_URL);
+        const audio = new Audio(NATURE_SOUND_URL);
         audio.loop = true;
         audio.volume = 0;
         audioRef.current = audio;
