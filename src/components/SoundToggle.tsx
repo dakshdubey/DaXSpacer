@@ -1,10 +1,53 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+
+// Royalty-free forest ambient sound (CC0 - freesound.org / pixabay)
+const FOREST_SOUND_URL = 'https://cdn.pixabay.com/audio/2022/03/15/audio_8cb749afb6.mp3';
 
 export default function SoundToggle() {
     const [muted, setMuted] = useState(true);
+    const audioRef = useRef<HTMLAudioElement | null>(null);
+
+    // Create audio element once on mount
+    useEffect(() => {
+        const audio = new Audio(FOREST_SOUND_URL);
+        audio.loop = true;
+        audio.volume = 0;
+        audioRef.current = audio;
+
+        return () => {
+            audio.pause();
+            audio.src = '';
+        };
+    }, []);
+
+    // Fade volume on mute/unmute
+    useEffect(() => {
+        const audio = audioRef.current;
+        if (!audio) return;
+
+        if (!muted) {
+            // Play and fade in
+            audio.play().catch(() => {/* autoplay blocked - user gesture required */ });
+            let vol = 0;
+            const fadeIn = setInterval(() => {
+                vol = Math.min(vol + 0.02, 0.35);
+                audio.volume = vol;
+                if (vol >= 0.35) clearInterval(fadeIn);
+            }, 50);
+        } else {
+            // Fade out then pause
+            const fadeOut = setInterval(() => {
+                audio.volume = Math.max(audio.volume - 0.02, 0);
+                if (audio.volume <= 0) {
+                    clearInterval(fadeOut);
+                    audio.pause();
+                }
+            }, 50);
+        }
+    }, [muted]);
 
     return (
         <button
@@ -25,7 +68,7 @@ export default function SoundToggle() {
                             ease: "easeInOut",
                             delay: i * 0.1
                         }}
-                        className="w-[1.5px] bg-white"
+                        className="w-[1.5px] bg-primary"
                     />
                 ))}
             </div>

@@ -13,7 +13,7 @@ export default function SpacerHome() {
                     transition={{ duration: 1 }}
                     className="mb-8"
                 >
-                    <span className="text-[10px] uppercase tracking-[0.6em] font-bold text-[#00f3ff] border-l-2 border-[#00f3ff] pl-4">The Future of Upskilling</span>
+                    <span className="text-[10px] uppercase tracking-[0.6em] font-bold text-[var(--primary)] border-l-2 border-[var(--primary)] pl-4">The Future of Upskilling</span>
                 </motion.div>
 
                 <motion.h1
@@ -37,7 +37,7 @@ export default function SpacerHome() {
                     </p>
 
                     <div className="flex gap-6">
-                        <a href="/spacer/programs" className="px-8 py-4 bg-[#00f3ff] text-black font-bold text-sm tracking-widest uppercase hover:bg-white transition-colors">
+                        <a href="/spacer/programs" className="px-8 py-4 bg-[var(--primary)] text-black font-bold text-sm tracking-widest uppercase hover:bg-white transition-colors">
                             Explore Programs
                         </a>
                         <a href="/spacer/about" className="px-8 py-4 border border-white/20 text-white font-bold text-sm tracking-widest uppercase hover:bg-white hover:text-black transition-all">
@@ -49,16 +49,16 @@ export default function SpacerHome() {
 
             {/* Stats / Numbers Section */}
             <section className="grid grid-cols-1 md:grid-cols-3 gap-1 px-4 bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
-                <div className="p-12 flex flex-col items-center text-center gap-4 bg-black">
-                    <span className="text-5xl font-outfit font-bold text-[#00f3ff]">1500+</span>
+                <div className="p-12 flex flex-col items-center text-center gap-4 bg-background">
+                    <span className="text-5xl font-outfit font-bold text-[var(--primary)]">1500+</span>
                     <span className="text-[10px] uppercase tracking-[0.4em] font-medium opacity-40">Students Empowered</span>
                 </div>
-                <div className="p-12 flex flex-col items-center text-center gap-4 bg-black">
-                    <span className="text-5xl font-outfit font-bold text-[#00f3ff]">30+</span>
+                <div className="p-12 flex flex-col items-center text-center gap-4 bg-background">
+                    <span className="text-5xl font-outfit font-bold text-[var(--primary)]">30+</span>
                     <span className="text-[10px] uppercase tracking-[0.4em] font-medium opacity-40">Industry Mentors</span>
                 </div>
-                <div className="p-12 flex flex-col items-center text-center gap-4 bg-black">
-                    <span className="text-5xl font-outfit font-bold text-[#00f3ff]">98%</span>
+                <div className="p-12 flex flex-col items-center text-center gap-4 bg-background">
+                    <span className="text-5xl font-outfit font-bold text-[var(--primary)]">98%</span>
                     <span className="text-[10px] uppercase tracking-[0.4em] font-medium opacity-40">Confidence Boost</span>
                 </div>
             </section>
@@ -74,7 +74,7 @@ export default function SpacerHome() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {['Workshops', 'Courses', 'Studio Programs'].map((title, i) => (
-                        <div key={title} className="p-8 border border-white/10 flex flex-col gap-12 group hover:border-[#00f3ff]/50 transition-all cursor-pointer relative overflow-hidden">
+                        <div key={title} className="p-8 border border-white/10 flex flex-col gap-12 group hover:border-[var(--primary)]/50 transition-all cursor-pointer relative overflow-hidden">
                             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-30 transition-opacity">
                                 <span className="text-8xl font-black">{i + 1}</span>
                             </div>
@@ -87,8 +87,8 @@ export default function SpacerHome() {
                                 </p>
                             </div>
                             <div className="flex items-center gap-3 relative z-10">
-                                <span className="text-[10px] uppercase font-bold tracking-widest group-hover:text-[#00f3ff]">Explore</span>
-                                <div className="h-[1px] w-8 bg-white/20 group-hover:bg-[#00f3ff] transition-all" />
+                                <span className="text-[10px] uppercase font-bold tracking-widest group-hover:text-[var(--primary)]">Explore</span>
+                                <div className="h-[1px] w-8 bg-white/20 group-hover:bg-[var(--primary)] transition-all" />
                             </div>
                         </div>
                     ))}
@@ -97,8 +97,8 @@ export default function SpacerHome() {
 
             {/* Outcome Section */}
             <section className="py-24 relative overflow-hidden rounded-3xl">
-                <div className="absolute inset-0 bg-[#00f3ff]/5 border border-[#00f3ff]/20" />
-                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#00f3ff]/40 to-transparent" />
+                <div className="absolute inset-0 bg-[var(--primary)]/5 border border-[var(--primary)]/20" />
+                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--primary)]/40 to-transparent" />
 
                 <div className="relative z-10 px-12 lg:px-24 flex flex-col lg:flex-row items-center justify-between gap-16">
                     <div className="max-w-xl">
@@ -108,7 +108,7 @@ export default function SpacerHome() {
                         </p>
                     </div>
 
-                    <a href="/spacer/contact" className="w-full lg:w-auto px-12 py-6 bg-white text-black font-bold uppercase tracking-widest text-sm hover:bg-[#00f3ff] transition-colors rounded-none">
+                    <a href="/spacer/contact" className="w-full lg:w-auto px-12 py-6 bg-white text-black font-bold uppercase tracking-widest text-sm hover:bg-[var(--primary)] transition-colors rounded-none">
                         Join Upcoming Program
                     </a>
                 </div>

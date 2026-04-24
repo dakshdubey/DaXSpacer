@@ -3,6 +3,7 @@ import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import { EcosystemProvider } from "@/context/EcosystemContext";
 import SmoothScroll from "@/components/SmoothScroll";
+import CustomCursor from "@/components/CustomCursor";
 
 const inter = Inter({ subsets: ["latin"], weight: ["300", "400", "600"], variable: '--font-inter' });
 const outfit = Outfit({ subsets: ["latin"], weight: ["300", "400", "600", "700"], variable: '--font-outfit' });
@@ -24,8 +25,9 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet" />
       </head>
-      <body className={`${inter.variable} ${outfit.variable} antialiased bg-black text-white font-inter`}>
+      <body className={`${inter.variable} ${outfit.variable} antialiased bg-background text-white font-inter cursor-none`}>
         <EcosystemProvider>
+          <CustomCursor />
           <SmoothScroll>
             {children}
           </SmoothScroll>

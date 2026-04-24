@@ -14,7 +14,7 @@ export default function DALibrary() {
                         <div className={`w-full bg-white/5 relative flex items-center justify-center`} style={{ height: `${200 + (i % 3) * 100}px` }}>
                             <span className="text-[10px] uppercase tracking-widest opacity-10 group-hover:opacity-40 transition-opacity">Visual {i.toString().padStart(2, '0')}</span>
                         </div>
-                        <div className="p-4 flex justify-between items-center bg-black">
+                        <div className="p-4 flex justify-between items-center bg-background">
                             <span className="text-[10px] uppercase font-light opacity-50">Exploration {i}</span>
                             <span className="text-[10px] font-mono opacity-20">DA-V0{i}</span>
                         </div>

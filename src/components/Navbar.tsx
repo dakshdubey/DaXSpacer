@@ -9,8 +9,8 @@ export default function Navbar() {
     if (ecosystem === 'gateway') return null;
 
     const isDA = ecosystem === 'da';
-    const logoColor = isDA ? 'text-white' : 'text-[#00f3ff]';
-    const accentColor = isDA ? 'bg-white' : 'bg-[#00f3ff]';
+    const logoColor = isDA ? 'text-highlight' : 'text-primary';
+    const accentColor = isDA ? 'bg-highlight' : 'bg-primary';
 
     const daNav = [
         { name: 'Projects', href: '/da/projects' },

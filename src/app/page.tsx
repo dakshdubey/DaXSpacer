@@ -15,7 +15,7 @@ export default function GatewayPage() {
   }, []);
 
   return (
-    <main className="relative bg-black select-none overflow-x-hidden min-h-screen">
+    <main className="relative bg-background select-none overflow-x-hidden min-h-screen">
       {/* Initial Loading Screen */}
       <AnimatePresence>
         {loading && (
@@ -23,7 +23,7 @@ export default function GatewayPage() {
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 1 }}
-            className="fixed inset-0 z-[100] bg-black flex items-center justify-center"
+            className="fixed inset-0 z-[100] bg-background flex items-center justify-center"
           >
             <div className="flex flex-col items-center gap-4">
               <div className="w-12 h-12 border-2 border-white/20 border-t-white rounded-full animate-spin" />
@@ -57,19 +57,19 @@ export default function GatewayPage() {
             transition={{ delay: 2, duration: 1 }}
             className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
           >
-            <span className="text-[8px] uppercase tracking-[0.4em]">Scroll to explore philosophy</span>
+            <span className="text-[8px] uppercase tracking-[0.4em]">Scroll to explore</span>
             <div className="w-px h-12 bg-gradient-to-b from-white to-transparent opacity-40 animate-pulse" />
           </motion.div>
         )}
       </section>
 
       {/* Section 2: Philosophical Foundation (DA) */}
-      <section className="relative z-10 min-h-screen w-full py-32 px-12 md:px-24 flex flex-col justify-center bg-black/40 backdrop-blur-sm">
+      <section className="relative z-10 min-h-screen w-full py-32 px-12 md:px-24 flex flex-col justify-center bg-background/40 backdrop-blur-sm">
         <div className="max-w-4xl">
           <motion.span
             initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 0.4, x: 0 }}
-            className="text-[10px] uppercase tracking-[0.6em] mb-8 block"
+            whileInView={{ opacity: 0.8, x: 0 }}
+            className="text-[10px] uppercase tracking-[0.6em] mb-8 block text-highlight"
           >
             The Foundation | DA
           </motion.span>
@@ -83,16 +83,16 @@ export default function GatewayPage() {
       </section>
 
       {/* Section 3: Technical Evolution (SPACER) */}
-      <section className="relative z-10 min-h-screen w-full py-32 px-12 md:px-24 flex flex-col items-end justify-center bg-black/40 backdrop-blur-sm">
+      <section className="relative z-10 min-h-screen w-full py-32 px-12 md:px-24 flex flex-col items-end justify-center bg-background/40 backdrop-blur-sm">
         <div className="max-w-4xl text-right">
           <motion.span
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 0.4, x: 0 }}
-            className="text-[10px] uppercase tracking-[0.6em] mb-8 block text-[#00f3ff]"
+            className="text-[10px] uppercase tracking-[0.6em] mb-8 block text-[var(--primary)]"
           >
             The Evolution | SPACER
           </motion.span>
-          <h2 className="text-5xl md:text-8xl font-outfit font-bold tracking-tighter leading-[0.9] mb-12 text-[#00f3ff]">
+          <h2 className="text-5xl md:text-8xl font-outfit font-bold tracking-tighter leading-[0.9] mb-12 text-[var(--primary)]">
             Upskilling for a better planet.
           </h2>
           <p className="text-xl md:text-3xl font-light opacity-60 leading-relaxed max-w-3xl ml-auto">
@@ -102,14 +102,14 @@ export default function GatewayPage() {
       </section>
 
       {/* Section 4: Global Network & Initiatives */}
-      <section className="relative z-10 min-h-screen w-full py-32 px-12 md:px-24 flex flex-col justify-center bg-black/60 backdrop-blur-md">
+      <section className="relative z-10 min-h-screen w-full py-32 px-12 md:px-24 flex flex-col justify-center bg-background/60 backdrop-blur-md">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-24">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1 }}
           >
-            <h3 className="text-3xl font-outfit font-bold mb-6 italic text-[#00f3ff]">Global Network</h3>
+            <h3 className="text-3xl font-outfit font-bold mb-6 italic text-[var(--primary)]">Global Network</h3>
             <p className="opacity-50 font-light leading-relaxed mb-12">
               Operational in Bengaluru, and expanding across global AEC hubs. Supporting a community of 5000+ researchers and students.
             </p>
@@ -129,16 +129,16 @@ export default function GatewayPage() {
               <h4 className="text-lg font-outfit font-bold mb-2">Sustainable Infrastructure</h4>
               <p className="text-[10px] opacity-40 leading-relaxed uppercase tracking-widest">Ongoing Research Initiative 2026</p>
             </div>
-            <div className="p-8 border border-[#00f3ff]/10 bg-[#00f3ff]/5">
+            <div className="p-8 border border-[var(--primary)]/10 bg-[var(--primary)]/5">
               <h4 className="text-lg font-outfit font-bold mb-2">AI in AEC Workflow</h4>
-              <p className="text-[10px] opacity-40 leading-relaxed uppercase tracking-widest text-[#00f3ff]">Professional Upskilling Track</p>
+              <p className="text-[10px] opacity-40 leading-relaxed uppercase tracking-widest text-[var(--primary)]">Professional Upskilling Track</p>
             </div>
           </motion.div>
         </div>
       </section>
 
       {/* Section 5: The Convergence */}
-      <section className="relative z-10 py-48 px-12 md:px-24 border-t border-white/5 bg-black">
+      <section className="relative z-10 py-48 px-12 md:px-24 border-t border-white/5 bg-background">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-24 items-center">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -146,8 +146,8 @@ export default function GatewayPage() {
           >
             <h3 className="text-3xl font-outfit font-bold mb-8 italic">Choose your entry.</h3>
             <div className="flex gap-4">
-              <a href="/da" className="px-8 py-4 border border-white text-[10px] uppercase tracking-widest font-bold hover:bg-white hover:text-black transition-all">Studio DA</a>
-              <a href="/spacer" className="px-8 py-4 border border-[#00f3ff] text-[10px] uppercase tracking-widest font-bold text-[#00f3ff] hover:bg-[#00f3ff] hover:text-black transition-all">Spacer Platform</a>
+              <a href="/da" className="px-8 py-4 border border-highlight text-[10px] uppercase tracking-widest font-bold text-highlight hover:bg-highlight hover:text-background transition-all">Studio DA</a>
+              <a href="/spacer" className="px-8 py-4 border border-primary text-[10px] uppercase tracking-widest font-bold text-primary hover:bg-primary hover:text-background transition-all">Spacer Platform</a>
             </div>
           </motion.div>
           <motion.p

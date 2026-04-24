@@ -40,7 +40,7 @@ export default function DAAbout() {
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true }}
-                        className="p-16 bg-black flex flex-col gap-6"
+                        className="p-16 bg-background flex flex-col gap-6"
                     >
                         <span className="text-xl font-outfit font-bold tracking-tight">{item.t}</span>
                         <p className="text-xs opacity-50 font-light leading-relaxed">{item.d}</p>

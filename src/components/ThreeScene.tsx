@@ -1,140 +1,180 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import * as THREE from 'three';
+
+interface Particle {
+    x: number;
+    y: number;
+    vx: number;
+    vy: number;
+    size: number;
+    originalX: number;
+    originalY: number;
+}
 
 export default function ThreeScene() {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const mouse = useRef({ x: 0, y: 0 });
+    const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
-        const container = containerRef.current;
-        if (!container) return;
+        const canvas = canvasRef.current;
+        if (!canvas) return;
 
-        const width = window.innerWidth;
-        const height = window.innerHeight;
+        const ctx = canvas.getContext('2d')!;
+        const mouse = { x: -1000, y: -1000 };
+        let width = 0;
+        let height = 0;
+        let rafId: number;
 
-        // Scene setup
-        const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x000000, 0.04);
+        const particles: Particle[] = [];
 
-        // Camera
-        const camera = new THREE.PerspectiveCamera(65, width / height, 0.1, 1000);
-        camera.position.z = 6;
-
-        // Renderer
-        const renderer = new THREE.WebGLRenderer({
-            antialias: true,
-            alpha: true,
-            powerPreference: "high-performance"
-        });
-        renderer.setSize(width, height);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        container.appendChild(renderer.domElement);
-
-        // Architectural Grid System
-        const createGrid = (size: number, divisions: number, color: number) => {
-            const grid = new THREE.GridHelper(size, divisions, color, color);
-            grid.material.transparent = true;
-            grid.material.opacity = 0.1;
-            return grid;
+        const resize = () => {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
         };
 
-        const gridBottom = createGrid(40, 40, 0x444444);
-        gridBottom.position.y = -2;
-        scene.add(gridBottom);
-
-        const gridTop = createGrid(40, 40, 0x444444);
-        gridTop.position.y = 2;
-        scene.add(gridTop);
-
-        // Floating Dust Particles
-        const particlesGeometry = new THREE.BufferGeometry();
-        const particlesCount = 2000;
-        const posArray = new Float32Array(particlesCount * 3);
-
-        for (let i = 0; i < particlesCount * 3; i++) {
-            posArray[i] = (Math.random() - 0.5) * 20;
-        }
-
-        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-        const particlesMaterial = new THREE.PointsMaterial({
-            size: 0.005,
-            color: 0xffffff,
-            transparent: true,
-            opacity: 0.4
-        });
-
-        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-        scene.add(particlesMesh);
-
-        // Dynamic Lights
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
-        scene.add(ambientLight);
-
-        const leftLight = new THREE.PointLight(0xffffff, 15, 15);
-        leftLight.position.set(-8, 3, 3);
-        scene.add(leftLight);
-
-        const rightLight = new THREE.PointLight(0x00f3ff, 15, 15);
-        rightLight.position.set(8, 3, 3);
-        scene.add(rightLight);
-
-        // Interaction Smoothness
-        const targetCameraPos = new THREE.Vector3(0, 0, 6);
-
-        const handleMouseMove = (event: MouseEvent) => {
-            mouse.current.x = (event.clientX / width - 0.5) * 2;
-            mouse.current.y = -(event.clientY / height - 0.5) * 2;
+        const init = () => {
+            particles.length = 0;
+            for (let i = 0; i < 50; i++) {
+                const x = Math.random() * width;
+                const y = Math.random() * height;
+                particles.push({
+                    x,
+                    y,
+                    vx: (Math.random() - 0.5) * 0.2,
+                    vy: (Math.random() - 0.5) * 0.2,
+                    size: Math.random() * 2 + 1,
+                    originalX: x,
+                    originalY: y,
+                });
+            }
         };
 
-        window.addEventListener('mousemove', handleMouseMove);
+        const drawGrid = () => {
+            const spacing = 100;
+            ctx.strokeStyle = 'rgba(255,255,255,0.035)';
+            ctx.lineWidth = 1;
 
-        const animateLoop = () => {
-            const requestID = requestAnimationFrame(animateLoop);
+            // Vertical lines — distort toward mouse
+            for (let x = 0; x < width; x += spacing) {
+                ctx.beginPath();
+                for (let y = 0; y <= height; y += 20) {
+                    const dx = mouse.x - x;
+                    const dy = mouse.y - y;
+                    const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+                    const offset = Math.max(0, (300 - dist) / 300) * 30;
+                    const drawX = x + (dx / dist) * -offset;
+                    if (y === 0) ctx.moveTo(drawX, y);
+                    else ctx.lineTo(drawX, y);
+                }
+                ctx.stroke();
+            }
 
-            // Smooth camera interpolation
-            targetCameraPos.x = mouse.current.x * 1.5;
-            targetCameraPos.y = mouse.current.y * 1.5;
-
-            camera.position.lerp(targetCameraPos, 0.03);
-            camera.lookAt(0, 0, 0);
-
-            // Subtle scene movement
-            particlesMesh.rotation.y += 0.0005;
-            particlesMesh.rotation.x += 0.0002;
-
-            gridBottom.rotation.y += 0.0001;
-            gridTop.rotation.y -= 0.0001;
-
-            renderer.render(scene, camera);
-            return requestID;
+            // Horizontal lines
+            for (let y = 0; y < height; y += spacing) {
+                ctx.beginPath();
+                for (let x = 0; x <= width; x += 20) {
+                    const dx = mouse.x - x;
+                    const dy = mouse.y - y;
+                    const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+                    const offset = Math.max(0, (300 - dist) / 300) * 30;
+                    const drawY = y + (dy / dist) * -offset;
+                    if (x === 0) ctx.moveTo(x, drawY);
+                    else ctx.lineTo(x, drawY);
+                }
+                ctx.stroke();
+            }
         };
 
-        const requestID = animateLoop();
+        const animate = () => {
+            rafId = requestAnimationFrame(animate);
 
-        const handleResize = () => {
-            const w = window.innerWidth;
-            const h = window.innerHeight;
-            camera.aspect = w / h;
-            camera.updateProjectionMatrix();
-            renderer.setSize(w, h);
+            // Dark BG fill
+            ctx.fillStyle = '#191919';
+            ctx.fillRect(0, 0, width, height);
+
+            drawGrid();
+
+            for (let i = 0; i < particles.length; i++) {
+                const p = particles[i];
+
+                // Mouse repulsion
+                const dx = mouse.x - p.x;
+                const dy = mouse.y - p.y;
+                const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+                const force = Math.max(0, (200 - dist) / 200);
+
+                if (dist < 200) {
+                    p.x -= (dx / dist) * force * 5;
+                    p.y -= (dy / dist) * force * 5;
+                }
+
+                // Return to original
+                p.x += (p.originalX - p.x) * 0.02;
+                p.y += (p.originalY - p.y) * 0.02;
+
+                // Drift
+                p.originalX += p.vx;
+                p.originalY += p.vy;
+
+                // Wrap
+                if (p.originalX < 0) p.originalX = width;
+                if (p.originalX > width) p.originalX = 0;
+                if (p.originalY < 0) p.originalY = height;
+                if (p.originalY > height) p.originalY = 0;
+
+                // Draw dot
+                ctx.fillStyle = 'rgba(255,255,255,0.7)';
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Draw connecting lines
+                for (let j = i + 1; j < particles.length; j++) {
+                    const p2 = particles[j];
+                    const dxx = p.x - p2.x;
+                    const dyy = p.y - p2.y;
+                    const d = Math.sqrt(dxx * dxx + dyy * dyy);
+                    if (d < 150) {
+                        ctx.strokeStyle = `rgba(255,255,255,${0.12 * (1 - d / 150)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                }
+            }
         };
 
-        window.addEventListener('resize', handleResize);
+        const onMouseMove = (e: MouseEvent) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        };
+
+        const onResize = () => {
+            resize();
+        };
+
+        resize();
+        init();
+        animate();
+
+        window.addEventListener('mousemove', onMouseMove);
+        window.addEventListener('resize', onResize);
 
         return () => {
-            window.removeEventListener('mousemove', handleMouseMove);
-            window.removeEventListener('resize', handleResize);
-            cancelAnimationFrame(requestID);
-            if (container) {
-                container.removeChild(renderer.domElement);
-            }
-            renderer.dispose();
-            particlesGeometry.dispose();
-            particlesMaterial.dispose();
+            cancelAnimationFrame(rafId);
+            window.removeEventListener('mousemove', onMouseMove);
+            window.removeEventListener('resize', onResize);
         };
     }, []);
 
-    return <div ref={containerRef} className="w-full h-full" />;
+    return (
+        <canvas
+            ref={canvasRef}
+            style={{ display: 'block', width: '100%', height: '100%' }}
+        />
+    );
 }

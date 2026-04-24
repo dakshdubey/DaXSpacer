@@ -102,7 +102,7 @@ export default function TransitionOverlay() {
                     transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                     className="text-center"
                 >
-                    <h2 className="animate-text text-4xl md:text-7xl font-outfit font-bold tracking-[0.2em] mb-4 group-hover:text-[#00f3ff] transition-colors duration-500">
+                    <h2 className="animate-text text-4xl md:text-7xl font-outfit font-bold tracking-[0.2em] mb-4 group-hover:text-[var(--primary)] transition-colors duration-500">
                         ENTER SPACER
                     </h2>
                     <p className="animate-text text-[10px] md:text-xs tracking-[0.3em] font-light uppercase opacity-40 group-hover:opacity-100 transition-opacity duration-500">
@@ -118,7 +118,7 @@ export default function TransitionOverlay() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 0.1 }}
                         exit={{ opacity: 0 }}
-                        className={`absolute inset-0 pointer-events-none transition-colors duration-1000 ${hoveredZone === 'DA' ? 'bg-gradient-to-r from-white/20 to-transparent' : 'bg-gradient-to-l from-[#00f3ff]/20 to-transparent'
+                        className={`absolute inset-0 pointer-events-none transition-colors duration-1000 ${hoveredZone === 'DA' ? 'bg-gradient-to-r from-white/20 to-transparent' : 'bg-gradient-to-l from-[var(--primary)]/20 to-transparent'
                             }`}
                     />
                 )}

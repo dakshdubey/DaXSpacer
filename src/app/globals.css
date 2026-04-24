@@ -3,10 +3,19 @@
 @tailwind utilities;
 
 :root {
-  --background: #000000;
-  --foreground: #ffffff;
-  --accent-da: #ffffff;
-  --accent-spacer: #00f3ff;
+  --background: #191919;
+  --foreground: #FFFFFF;
+  --primary: #834DFB;
+  --secondary: #F5F3FF;
+  --highlight: #F0E100;
+  --accent-da: var(--highlight);
+  --accent-spacer: var(--primary);
+}
+
+*,
+*::before,
+*::after {
+  cursor: none !important;
 }
 
 body {
@@ -24,11 +33,15 @@ body {
   }
 
   .glow-da:hover {
-    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    text-shadow: 0 0 20px rgba(240, 225, 0, 0.6);
   }
 
   .glow-spacer:hover {
-    text-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+    text-shadow: 0 0 20px rgba(131, 77, 251, 0.6);
+  }
+
+  .text-secondary {
+    color: var(--secondary);
   }
 }
 
