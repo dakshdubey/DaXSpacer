@@ -50,7 +50,7 @@ export default function CustomCursor() {
             follower.style.top = `${followY}px`;
 
             // Hover scale & difference effect
-            const scale = isHover ? 3 : 1;
+            const scale = isHover ? 2 : 1;
             follower.style.transform = `translate(-50%, -50%) scale(${scale})`;
             // Keep background white so difference mode actually inverts underlying text
             follower.style.background = 'white';
@@ -75,8 +75,8 @@ export default function CustomCursor() {
                 ref={followerRef}
                 style={{
                     position: 'fixed',
-                    width: 20,
-                    height: 20,
+                    width: 12,
+                    height: 12,
                     borderRadius: '50%',
                     background: 'white',
                     mixBlendMode: 'difference',
