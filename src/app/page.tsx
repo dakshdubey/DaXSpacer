@@ -8,40 +8,109 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 export default function GatewayPage() {
   const [loading, setLoading] = useState(true);
+  const [entered, setEntered] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
 
+  const handleEnter = () => {
+    // Trigger global sound toggle
+    window.dispatchEvent(new Event('force-play-sound'));
+
+    try {
+      const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+      const ctx = new AudioContext();
+
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(800, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.1);
+
+      gain.gain.setValueAtTime(0, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.5, ctx.currentTime + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.2);
+    } catch (e) {
+      console.log('Audio error:', e);
+    }
+    setEntered(true);
+  };
+
   return (
     <main className="relative bg-background select-none overflow-x-hidden min-h-screen">
-      {/* Initial Loading Screen */}
+      {/* Initial Loading Screen & Gateway Entry */}
       <AnimatePresence>
-        {loading && (
+        {!entered && (
           <motion.div
             initial={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1 }}
-            className="fixed inset-0 z-[100] bg-background flex items-center justify-center"
+            exit={{ opacity: 0, filter: "blur(20px)", scale: 1.15 }}
+            transition={{ duration: 3, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 z-[100] bg-background flex flex-col items-center justify-center pointer-events-auto"
           >
-            <div className="flex flex-col items-center gap-4">
-              <div className="w-12 h-12 border-2 border-white/20 border-t-white rounded-full animate-spin" />
-              <p className="text-[10px] tracking-[0.3em] font-light uppercase opacity-50">Configuring Space...</p>
-            </div>
+            <AnimatePresence mode="wait">
+              {loading ? (
+                <motion.div
+                  key="loading"
+                  initial={{ opacity: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.8 }}
+                  className="flex flex-col items-center gap-4"
+                >
+                  <div className="w-12 h-12 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                  <p className="text-[10px] tracking-[0.3em] font-light uppercase opacity-50">Configuring Space...</p>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="enter"
+                  initial={{ opacity: 0, scale: 1.05 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  className="flex flex-col items-center"
+                >
+                  <button
+                    onClick={handleEnter}
+                    className="group relative px-12 py-4 border border-white/20 hover:border-white/60 transition-colors overflow-hidden"
+                  >
+                    <div className="absolute inset-0 bg-white/10 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-out" />
+                    <span className="relative z-10 text-xs tracking-[0.5em] font-light uppercase text-white/80 group-hover:text-white transition-colors">
+                      Enter in Void
+                    </span>
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         )}
       </AnimatePresence>
 
       {/* 3D Background Experience - Fixed in background */}
-      <div className="fixed inset-0 z-0 h-screen w-full pointer-events-none">
+      <motion.div
+        initial={{ scale: 1 }}
+        animate={{ scale: entered ? 1.05 : 1 }}
+        transition={{ duration: 4, ease: [0.19, 1, 0.22, 1] }}
+        className="fixed inset-0 z-0 h-screen w-full pointer-events-none"
+      >
         <ThreeScene />
-      </div>
+      </motion.div>
 
       {/* Global UI Controls */}
-      <div className="fixed top-8 right-8 z-50 pointer-events-auto">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: entered ? 1 : 0 }}
+        transition={{ duration: 2, delay: 1.5, ease: [0.19, 1, 0.22, 1] }}
+        className="fixed top-8 right-8 z-50 pointer-events-auto"
+      >
         <SoundToggle />
-      </div>
+      </motion.div>
 
       {/* Section 1: Cinematic Gateway */}
       <section className="relative z-10 h-screen w-full flex flex-col items-center justify-center pointer-events-none">
@@ -50,7 +119,7 @@ export default function GatewayPage() {
         </div>
 
         {/* Scroll Indicator */}
-        {!loading && (
+        {entered && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.4 }}
@@ -64,7 +133,7 @@ export default function GatewayPage() {
       </section>
 
       {/* Section 2: Philosophical Foundation (DA) */}
-      <section className="relative z-10 min-h-screen w-full py-32 px-12 md:px-24 flex flex-col justify-center bg-background/40 backdrop-blur-sm">
+      <section className="relative z-10 min-h-screen w-full py-32 px-12 md:px-24 flex flex-col justify-center bg-transparent">
         <div className="max-w-4xl">
           <motion.span
             initial={{ opacity: 0, x: -20 }}
@@ -83,7 +152,7 @@ export default function GatewayPage() {
       </section>
 
       {/* Section 3: Technical Evolution (SPACER) */}
-      <section className="relative z-10 min-h-screen w-full py-32 px-12 md:px-24 flex flex-col items-end justify-center bg-background/40 backdrop-blur-sm">
+      <section className="relative z-10 min-h-screen w-full py-32 px-12 md:px-24 flex flex-col items-end justify-center bg-transparent">
         <div className="max-w-4xl text-right">
           <motion.span
             initial={{ opacity: 0, x: 20 }}
@@ -102,7 +171,7 @@ export default function GatewayPage() {
       </section>
 
       {/* Section 4: Global Network & Initiatives */}
-      <section className="relative z-10 min-h-screen w-full py-32 px-12 md:px-24 flex flex-col justify-center bg-background/60 backdrop-blur-md">
+      <section className="relative z-10 min-h-screen w-full py-32 px-12 md:px-24 flex flex-col justify-center bg-transparent">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-24">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -138,7 +207,7 @@ export default function GatewayPage() {
       </section>
 
       {/* Section 5: The Convergence */}
-      <section className="relative z-10 py-48 px-12 md:px-24 border-t border-white/5 bg-background">
+      <section className="relative z-10 py-48 px-12 md:px-24 border-t border-white/5 bg-transparent">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-24 items-center">
           <motion.div
             initial={{ opacity: 0, x: -30 }}

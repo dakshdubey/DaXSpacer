@@ -9,14 +9,25 @@ export default function TransitionOverlay() {
     const [selected, setSelected] = useState<'DA' | 'SPACER' | null>(null);
 
     useEffect(() => {
-        // Initial entrance animation for text using Anime.js v4 animate
+        // Initial state before entry
         animate('.animate-text', {
-            opacity: [0, 1],
-            translateY: [20, 0],
-            delay: stagger(200, { start: 1000 }),
-            easing: 'cubicBezier(0.22, 1, 0.36, 1)',
-            duration: 1500
+            opacity: 0,
+            duration: 0
         });
+
+        // Entrance animation on Entry click
+        const handleEnter = () => {
+            animate('.animate-text', {
+                opacity: [0, 1],
+                translateY: [60, 0],
+                delay: stagger(150, { start: 200 }),
+                easing: 'easeOutExpo',
+                duration: 3000
+            });
+        };
+
+        window.addEventListener('force-play-sound', handleEnter);
+        return () => window.removeEventListener('force-play-sound', handleEnter);
     }, []);
 
     const handleChoice = async (choice: 'DA' | 'SPACER') => {

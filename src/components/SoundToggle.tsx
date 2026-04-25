@@ -10,6 +10,13 @@ export default function SoundToggle() {
     const [muted, setMuted] = useState(true);
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
+    // Listen for global force play event (e.g. from Enter in Void)
+    useEffect(() => {
+        const handleForcePlay = () => setMuted(false);
+        window.addEventListener('force-play-sound', handleForcePlay);
+        return () => window.removeEventListener('force-play-sound', handleForcePlay);
+    }, []);
+
     // Create audio element once on mount
     useEffect(() => {
         const audio = new Audio(NATURE_SOUND_URL);
