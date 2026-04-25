@@ -95,7 +95,7 @@ export default function SpacerHome() {
                         ))}
                     </div>
 
-                    <div className="relative z-10 w-full max-w-none px-4 pt-48 pb-12">
+                    <div className="relative z-10 w-full max-w-none px-4 pt-72 pb-12">
                         <SpacerRadar scrollProgress={smoothProgress} />
 
                         {/* Scroll Progress Indicator for User */}

@@ -112,8 +112,7 @@ export default function SpacerRadar({ scrollProgress }: SpacerRadarProps) {
             ctx.scale(2, 2);
             centerX = width / 2;
             centerY = height / 2;
-            // Robust radius calculation to avoid clipping
-            maxRadius = Math.min(width * 0.45, height * 0.55);
+            maxRadius = Math.min(width * 0.42, height * 0.42);
         };
 
         const draw = (time: number) => {
@@ -165,26 +164,41 @@ export default function SpacerRadar({ scrollProgress }: SpacerRadarProps) {
                 ctx.globalAlpha = 1;
             }
 
-            // Draw ANimated Leader Lines
+            // Draw ANimated Leader Lines with "Z-Turn" (Dogleg)
             if (easedDp > 0.4) {
                 const lineProgress = Math.min(1, (easedDp - 0.4) / 0.6);
                 ctx.strokeStyle = `rgba(255, 255, 255, ${0.15 * lineProgress})`;
                 ctx.lineWidth = 0.5;
                 ctx.font = '10px monospace';
 
-                // Top Right
+                // Top Right: [Node] -> [DiagonalMid] -> [HorizontalEnd]
                 leaderLabels.topRight.forEach((label, i) => {
                     const node = nodes[i + 1];
-                    const destX = width - 140;
+                    const destX = width - 120;
                     const destY = 80 + i * 25;
 
-                    const midX = node.x + (destX - 30 - node.x) * lineProgress;
-                    const midY = node.y + (destY - node.y) * lineProgress;
+                    const midX = node.x + (destX - node.x) * 0.3; // Initial breakout
+                    const midY = node.y + (destY - node.y) * 0.3;
 
                     ctx.beginPath();
                     ctx.moveTo(node.x, node.y);
-                    ctx.lineTo(midX, midY);
-                    if (lineProgress > 0.95) ctx.lineTo(destX, destY);
+
+                    // Draw first segment
+                    const p1 = Math.min(1, lineProgress * 3);
+                    ctx.lineTo(node.x + (midX - node.x) * p1, node.y + (midY - node.y) * p1);
+
+                    // Draw second segment (The Z-turn / bend)
+                    if (lineProgress > 0.33) {
+                        const p2 = Math.min(1, (lineProgress - 0.33) * 3);
+                        ctx.lineTo(midX + (destX - 40 - midX) * p2, midY + (destY - midY) * p2);
+                    }
+
+                    // Draw final horizontal segment
+                    if (lineProgress > 0.66) {
+                        const p3 = Math.min(1, (lineProgress - 0.66) * 3);
+                        ctx.lineTo(destX - 40 + 40 * p3, destY);
+                    }
+
                     ctx.stroke();
 
                     if (lineProgress > 0.9) {
@@ -193,19 +207,31 @@ export default function SpacerRadar({ scrollProgress }: SpacerRadarProps) {
                     }
                 });
 
-                // Bottom Left
+                // Bottom Left: [Node] -> [DiagonalMid] -> [HorizontalEnd]
                 leaderLabels.bottomLeft.forEach((label, i) => {
                     const node = nodes[nodes.length - 1 - i];
-                    const destX = 140;
+                    const destX = 120;
                     const destY = height - 150 - i * 25;
 
-                    const midX = node.x + (destX + 30 - node.x) * lineProgress;
-                    const midY = node.y + (destY - node.y) * lineProgress;
+                    const midX = node.x - (node.x - destX) * 0.3;
+                    const midY = node.y + (destY - node.y) * 0.3;
 
                     ctx.beginPath();
                     ctx.moveTo(node.x, node.y);
-                    ctx.lineTo(midX, midY);
-                    if (lineProgress > 0.95) ctx.lineTo(destX, destY);
+
+                    const p1 = Math.min(1, lineProgress * 3);
+                    ctx.lineTo(node.x + (midX - node.x) * p1, node.y + (midY - node.y) * p1);
+
+                    if (lineProgress > 0.33) {
+                        const p2 = Math.min(1, (lineProgress - 0.33) * 3);
+                        ctx.lineTo(midX + (destX + 40 - midX) * p2, midY + (destY - midY) * p2);
+                    }
+
+                    if (lineProgress > 0.66) {
+                        const p3 = Math.min(1, (lineProgress - 0.66) * 3);
+                        ctx.lineTo(destX + 40 - 40 * p3, destY);
+                    }
+
                     ctx.stroke();
 
                     if (lineProgress > 0.9) {
@@ -270,11 +296,11 @@ export default function SpacerRadar({ scrollProgress }: SpacerRadarProps) {
     return (
         <div
             ref={containerRef}
-            className="w-full max-w-[1600px] aspect-video relative mx-auto"
+            className="w-full max-w-none aspect-video relative mx-auto"
         >
             <canvas ref={canvasRef} className="w-full h-full block cursor-pointer" />
 
-            {/* Center Telemetry Display (Pinned to true center) */}
+            {/* Center Telemetry Display */}
             {showTelemetry && activeTelemetry && (
                 <div
                     className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#3A334B]/85 backdrop-blur-lg border border-white/10 p-6 rounded-lg shadow-2xl shadow-black/60 transition-all flex flex-col items-center duration-300 ${flicker ? 'opacity-50 scale-95' : 'opacity-100 scale-100'}`}
