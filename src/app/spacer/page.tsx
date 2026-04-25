@@ -1,8 +1,37 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
+import { useRef } from 'react';
+import SpacerRadar from '@/components/SpacerRadar';
 
 export default function SpacerHome() {
+    const containerRef = useRef<HTMLElement>(null);
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start start", "end end"]
+    });
+
+    const smoothProgress = useSpring(scrollYProgress, {
+        stiffness: 100,
+        damping: 30,
+        restDelta: 0.001
+    });
+
+    // Define opacities for the 5 containers using useTransform
+    const op1 = useTransform(smoothProgress, [0, 0.15, 0.2], [1, 1, 0]);
+    const op2 = useTransform(smoothProgress, [0.15, 0.2, 0.35, 0.4], [0, 1, 1, 0]);
+    const op3 = useTransform(smoothProgress, [0.35, 0.4, 0.55, 0.6], [0, 1, 1, 0]);
+    const op4 = useTransform(smoothProgress, [0.55, 0.6, 0.75, 0.8], [0, 1, 1, 0]);
+    const op5 = useTransform(smoothProgress, [0.75, 0.8, 1], [0, 1, 1]);
+
+    const phases = [
+        { id: 1, title: "Initialization", opacity: op1 },
+        { id: 2, title: "Coordinate Mapping", opacity: op2 },
+        { id: 3, title: "Neural Syncing", opacity: op3 },
+        { id: 4, title: "Telemetry Established", opacity: op4 },
+        { id: 5, title: "Full System Access", opacity: op5 },
+    ];
+
     return (
         <div className="flex flex-col gap-32">
             {/* Hero Section */}
@@ -47,19 +76,39 @@ export default function SpacerHome() {
                 </motion.div>
             </section>
 
-            {/* Stats / Numbers Section */}
-            <section className="grid grid-cols-1 md:grid-cols-3 gap-1 px-4 bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
-                <div className="p-12 flex flex-col items-center text-center gap-4 bg-background">
-                    <span className="text-5xl font-outfit font-bold text-[var(--primary)]">1500+</span>
-                    <span className="text-[10px] uppercase tracking-[0.4em] font-medium opacity-40">Students Empowered</span>
-                </div>
-                <div className="p-12 flex flex-col items-center text-center gap-4 bg-background">
-                    <span className="text-5xl font-outfit font-bold text-[var(--primary)]">30+</span>
-                    <span className="text-[10px] uppercase tracking-[0.4em] font-medium opacity-40">Industry Mentors</span>
-                </div>
-                <div className="p-12 flex flex-col items-center text-center gap-4 bg-background">
-                    <span className="text-5xl font-outfit font-bold text-[var(--primary)]">98%</span>
-                    <span className="text-[10px] uppercase tracking-[0.4em] font-medium opacity-40">Confidence Boost</span>
+            {/* Interactive Scrollytelling Radar Section */}
+            <section ref={containerRef} className="relative h-[500vh] w-full mt-24">
+                <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+                    {/* Background Content Layers (The 5 'Containers' mentioned by user) */}
+                    <div className="absolute inset-0 pointer-events-none">
+                        {phases.map((phase) => (
+                            <motion.div
+                                key={phase.id}
+                                style={{ opacity: phase.opacity }}
+                                className="absolute inset-0 flex flex-col items-center justify-start pt-8 px-12 text-center"
+                            >
+                                <span className="text-[10px] uppercase tracking-[0.8em] text-[var(--primary)] mb-4">Phase 0{phase.id}</span>
+                                <h3 className="text-4xl md:text-6xl font-outfit font-bold opacity-30">
+                                    {phase.title}
+                                </h3>
+                            </motion.div>
+                        ))}
+                    </div>
+
+                    <div className="relative z-10 w-full max-w-none px-4 pt-48 pb-12">
+                        <SpacerRadar scrollProgress={smoothProgress} />
+
+                        {/* Scroll Progress Indicator for User */}
+                        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
+                            <div className="w-12 h-[2px] bg-white/10 relative overflow-hidden">
+                                <motion.div
+                                    style={{ scaleX: smoothProgress }}
+                                    className="absolute inset-0 bg-[var(--primary)] origin-left"
+                                />
+                            </div>
+                            <span className="text-[8px] uppercase tracking-[0.2em] opacity-40">System Build Protocol</span>
+                        </div>
+                    </div>
                 </div>
             </section>
 
