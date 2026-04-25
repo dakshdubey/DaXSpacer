@@ -60,7 +60,7 @@ export default function TransitionOverlay() {
     return (
         <div className="flex-1 flex relative gateway-ui">
 
-            {/* LEFT ZONE: DA */}
+            {/* LEFT ZONE: DA*/}
             <div
                 onMouseEnter={() => !selected && setHoveredZone('DA')}
                 onMouseLeave={() => !selected && setHoveredZone(null)}
