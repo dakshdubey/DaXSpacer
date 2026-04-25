@@ -59,18 +59,6 @@ export default function TransitionOverlay() {
 
     return (
         <div className="flex-1 flex relative gateway-ui">
-            {/* Central Divider / Prompt */}
-            <div className="absolute inset-x-0 bottom-1/4 flex flex-col items-center justify-center text-center">
-                <p className="animate-text text-[10px] tracking-[0.5em] font-light uppercase opacity-40 mb-2">
-                    Choose your path
-                </p>
-                <motion.div
-                    initial={{ scaleX: 0 }}
-                    animate={{ scaleX: 1 }}
-                    transition={{ duration: 2, ease: [0.22, 1, 0.36, 1], delay: 0.8 }}
-                    className="h-[1px] w-12 bg-white/20"
-                />
-            </div>
 
             {/* LEFT ZONE: DA */}
             <div

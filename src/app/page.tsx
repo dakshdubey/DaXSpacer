@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import ThreeScene from '@/components/ThreeScene';
 import TransitionOverlay from '@/components/TransitionOverlay';
 import SoundToggle from '@/components/SoundToggle';
+import AnimeStaggerGrid from '@/components/AnimeStaggerGrid';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function GatewayPage() {
@@ -47,14 +48,17 @@ export default function GatewayPage() {
 
   return (
     <main className="relative bg-background select-none overflow-x-hidden min-h-screen">
+      {/* Anime.js Grid Transition Experience */}
+      <AnimeStaggerGrid entered={entered} />
+
       {/* Initial Loading Screen & Gateway Entry */}
       <AnimatePresence>
         {!entered && (
           <motion.div
             initial={{ opacity: 1 }}
-            exit={{ opacity: 0, filter: "blur(20px)", scale: 1.15 }}
-            transition={{ duration: 3, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-[100] bg-background flex flex-col items-center justify-center pointer-events-auto"
+            exit={{ opacity: 0, scale: 1.1, filter: "blur(10px)" }}
+            transition={{ duration: 0.5 }}
+            className="fixed inset-0 z-[110] flex flex-col items-center justify-center pointer-events-auto"
           >
             <AnimatePresence mode="wait">
               {loading ? (
