@@ -9,7 +9,7 @@ export default function Navbar() {
     if (ecosystem === 'gateway') return null;
 
     const isDA = ecosystem === 'da';
-    const logoColor = isDA ? 'text-highlight' : 'text-primary';
+    const logoColor = isDA ? 'text-highlight' : 'text-white';
     const accentColor = isDA ? 'bg-highlight' : 'bg-primary';
 
     const daNav = [

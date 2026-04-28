@@ -1,6 +1,7 @@
 'use client';
 
 import Navbar from "@/components/Navbar";
+import Aurora from "@/components/Aurora";
 
 export default function SpacerLayout({
     children,
@@ -12,31 +13,33 @@ export default function SpacerLayout({
             className="min-h-screen text-white selection:bg-primary selection:text-background relative"
             style={{
                 background: `
-                    radial-gradient(ellipse 80% 60% at 15% 90%, rgba(248,151,254,0.28) 0%, rgba(147,90,240,0.18) 35%, transparent 70%),
-                    radial-gradient(ellipse 60% 50% at 85% 10%, rgba(72,58,204,0.22) 0%, rgba(23,32,144,0.15) 50%, transparent 80%),
                     radial-gradient(ellipse 100% 80% at 50% 50%, #0A1051 0%, #06094A 50%, #03042C 100%)
                 `,
             }}
         >
-            {/* Star field layer */}
+            {/* Aurora background layer — fixed full viewport */}
             <div
                 aria-hidden="true"
                 style={{
                     position: 'fixed',
-                    inset: 0,
+                    top: 0,
+                    left: 0,
+                    width: '100vw',
+                    height: '100vh',
                     pointerEvents: 'none',
                     zIndex: 0,
-                    backgroundImage: `
-                        radial-gradient(circle, rgba(255,255,255,0.55) 1px, transparent 1px),
-                        radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px),
-                        radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px)
-                    `,
-                    backgroundSize: '160px 160px, 100px 100px, 220px 220px',
-                    backgroundPosition: '0 0, 80px 80px, 40px 130px',
+                    overflow: 'hidden',
                 }}
-            />
+            >
+                <Aurora
+                    colorStops={["#F897FE", "#935AF0", "#483ACC"]}
+                    blend={0.5}
+                    amplitude={1.0}
+                    speed={1}
+                />
+            </div>
 
-            {/* All content above star field */}
+            {/* All content above aurora */}
             <div className="relative z-10">
                 <Navbar />
                 <main className="pt-24 px-8 md:px-16 lg:px-24 pb-20">
