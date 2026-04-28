@@ -88,7 +88,7 @@ export default function SpacerHome() {
                                 className="absolute inset-0 flex flex-col items-center justify-start pt-8 px-12 text-center"
                             >
                                 <span className="text-[10px] uppercase tracking-[0.8em] text-[var(--primary)] mb-4">Phase 0{phase.id}</span>
-                                <h3 className="text-4xl md:text-6xl font-outfit font-bold opacity-30">
+                                <h3 className="text-xl md:text-3xl font-outfit font-bold opacity-30">
                                     {phase.title}
                                 </h3>
                             </motion.div>

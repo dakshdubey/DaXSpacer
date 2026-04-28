@@ -32,40 +32,40 @@ export default function SpacerRadar({ scrollProgress }: SpacerRadarProps) {
 
     const colors = ['#ffffff', '#ff4d4d', '#4dff4d', '#b366ff', '#ffa64d'];
     const spacerInfoData = [
-    { title: '1500+', subtitle: 'STUDENTS EMPOWERED' },
-    { title: '2024', subtitle: 'FOUNDED YEAR' },
-    { title: 'STUDIO', subtitle: 'BASED LEARNING' },
-    { title: 'REAL', subtitle: 'WORKFLOWS' },
-    { title: 'OUTPUT', subtitle: 'DRIVEN PROGRAMS' },
-    { title: 'LIVE', subtitle: 'WORKSHOPS & SESSIONS' },
-    { title: 'PORTFOLIO', subtitle: 'GRADE OUTCOMES' },
-    { title: 'AI + TECH', subtitle: 'INTEGRATION' },
-    { title: 'COMPUTATIONAL', subtitle: 'DESIGN THINKING' },
-    { title: 'ENVIRONMENTAL', subtitle: 'SIMULATION' },
-    { title: 'AEC', subtitle: 'INDUSTRY FOCUS' }, // Architecture, Engineering, Construction
-    { title: 'GLOBAL', subtitle: 'LEARNING ECOSYSTEM' },
-    { title: 'MENTOR', subtitle: 'GUIDED PROGRAMS' },
-    { title: 'PRACTICAL', subtitle: 'MASTERY MODEL' },
-    { title: '0%', subtitle: 'PASSIVE LEARNING' },
-    { title: '100%', subtitle: 'HANDS-ON EXECUTION' }
-];
+        { title: '1500+', subtitle: 'STUDENTS EMPOWERED' },
+        { title: '2024', subtitle: 'FOUNDED YEAR' },
+        { title: 'STUDIO', subtitle: 'BASED LEARNING' },
+        { title: 'REAL', subtitle: 'WORKFLOWS' },
+        { title: 'OUTPUT', subtitle: 'DRIVEN PROGRAMS' },
+        { title: 'LIVE', subtitle: 'WORKSHOPS & SESSIONS' },
+        { title: 'PORTFOLIO', subtitle: 'GRADE OUTCOMES' },
+        { title: 'AI + TECH', subtitle: 'INTEGRATION' },
+        { title: 'COMPUTATIONAL', subtitle: 'DESIGN THINKING' },
+        { title: 'ENVIRONMENTAL', subtitle: 'SIMULATION' },
+        { title: 'AEC', subtitle: 'INDUSTRY FOCUS' }, // Architecture, Engineering, Construction
+        { title: 'GLOBAL', subtitle: 'LEARNING ECOSYSTEM' },
+        { title: 'MENTOR', subtitle: 'GUIDED PROGRAMS' },
+        { title: 'PRACTICAL', subtitle: 'MASTERY MODEL' },
+        { title: '0%', subtitle: 'PASSIVE LEARNING' },
+        { title: '100%', subtitle: 'HANDS-ON EXECUTION' }
+    ];
 
     const leaderLabels = {
-    topRight: [
-        'Studio Workflow',
-        'AI Integration',
-        'Computational Design',
-        'Environmental Simulation',
-        'Data-Driven Design'
-    ],
-    bottomLeft: [
-        'Portfolio Outcomes',
-        'Industry Ready Skills',
-        'Real Project Simulation',
-        'Mentor Feedback Loop',
-        'Built Environment Ecosystem'
-    ]
-};
+        topRight: [
+            'Studio Workflow',
+            'AI Integration',
+            'Computational Design',
+            'Environmental Simulation',
+            'Data-Driven Design'
+        ],
+        bottomLeft: [
+            'Portfolio Outcomes',
+            'Industry Ready Skills',
+            'Real Project Simulation',
+            'Mentor Feedback Loop',
+            'Built Environment Ecosystem'
+        ]
+    };
 
     useMotionValueEvent(scrollProgress, "change", (latest) => {
         if (latest > 0.05 && !showTelemetry) setShowTelemetry(true);
@@ -180,72 +180,85 @@ export default function SpacerRadar({ scrollProgress }: SpacerRadarProps) {
                 ctx.globalAlpha = 1;
             }
 
-            // Draw ANimated Leader Lines with "Z-Turn" (Dogleg)
-            // Reduce or hide based on screen width to avoid clutter
-            if (easedDp > 0.4 && width > 480) {
-                const lineProgress = Math.min(1, (easedDp - 0.4) / 0.6);
-                ctx.strokeStyle = `rgba(255, 255, 255, ${0.15 * lineProgress})`;
-                ctx.lineWidth = 0.5;
-                ctx.font = isMobile ? '6px monospace' : '10px monospace';
+            // Draw Animated Leader Lines — each label reveals one-by-one as scroll progresses
+            if (width > 480) {
+                // Each label gets its own staggered threshold (0.08 apart), so they pop in sequentially
+                const LABEL_STAGGER = 0.08;
+                const LABEL_START = 0.35; // first label starts drawing at 35% scroll
+                ctx.font = isMobile ? '8px monospace' : '13px monospace';
 
-                // Top Right
+                // ── Top Right labels ──
                 leaderLabels.topRight.forEach((label, i) => {
-                    const node = nodes[i + 1];
-                    const destX = width - (isMobile ? 60 : 120);
-                    const destY = (isMobile ? 30 : 80) + i * (isMobile ? 12 : 25);
+                    const labelStart = LABEL_START + i * LABEL_STAGGER;
+                    if (easedDp < labelStart) return; // not yet revealed
 
+                    const lp = Math.min(1, (easedDp - labelStart) / 0.18); // each label takes 18% of scroll to fully draw
+
+                    const node = nodes[i + 1];
+                    const destX = width - (isMobile ? 70 : 150);
+                    const destY = (isMobile ? 35 : 90) + i * (isMobile ? 16 : 32);
                     const midX = node.x + (destX - node.x) * 0.3;
                     const midY = node.y + (destY - node.y) * 0.3;
 
+                    ctx.strokeStyle = `rgba(255, 255, 255, ${0.2 * lp})`;
+                    ctx.lineWidth = 0.7;
                     ctx.beginPath();
                     ctx.moveTo(node.x, node.y);
-                    const p1 = Math.min(1, lineProgress * 3);
+                    const p1 = Math.min(1, lp * 3);
                     ctx.lineTo(node.x + (midX - node.x) * p1, node.y + (midY - node.y) * p1);
-
-                    if (lineProgress > 0.33) {
-                        const p2 = Math.min(1, (lineProgress - 0.33) * 3);
-                        ctx.lineTo(midX + (destX - (isMobile ? 15 : 40) - midX) * p2, midY + (destY - midY) * p2);
+                    if (lp > 0.33) {
+                        const p2 = Math.min(1, (lp - 0.33) * 3);
+                        ctx.lineTo(midX + (destX - (isMobile ? 18 : 44) - midX) * p2, midY + (destY - midY) * p2);
                     }
-
-                    if (lineProgress > 0.66) {
-                        const p3 = Math.min(1, (lineProgress - 0.66) * 3);
-                        ctx.lineTo(destX - (isMobile ? 15 : 40) + (isMobile ? 15 : 40) * p3, destY);
+                    if (lp > 0.66) {
+                        const p3 = Math.min(1, (lp - 0.66) * 3);
+                        ctx.lineTo(destX - (isMobile ? 18 : 44) + (isMobile ? 18 : 44) * p3, destY);
                     }
                     ctx.stroke();
 
-                    if (lineProgress > 0.9) {
-                        ctx.fillStyle = `rgba(255, 255, 255, ${0.6 * (lineProgress - 0.9) * 10})`;
-                        ctx.fillText(label.toUpperCase(), destX + 5, destY + 2);
+                    if (lp > 0.85) {
+                        const textAlpha = Math.min(1, (lp - 0.85) * 6.67);
+                        ctx.fillStyle = `rgba(255, 255, 255, ${0.8 * textAlpha})`;
+                        ctx.textAlign = 'left';
+                        ctx.fillText(label.toUpperCase(), destX + 6, destY + (isMobile ? 3 : 5));
                     }
                 });
 
-                // Bottom Left
+                // ── Bottom Left labels ──
                 leaderLabels.bottomLeft.forEach((label, i) => {
-                    const node = nodes[nodes.length - 1 - i];
-                    const destX = (isMobile ? 60 : 120);
-                    const destY = height - (isMobile ? 60 : 150) - i * (isMobile ? 12 : 25);
+                    // Offset bottom-left by half a stagger so they interleave nicely
+                    const labelStart = LABEL_START + 0.04 + i * LABEL_STAGGER;
+                    if (easedDp < labelStart) return;
 
+                    const lp = Math.min(1, (easedDp - labelStart) / 0.18);
+
+                    const node = nodes[nodes.length - 1 - i];
+                    const destX = (isMobile ? 70 : 150);
+                    const destY = height - (isMobile ? 65 : 170) - i * (isMobile ? 16 : 32);
                     const midX = node.x - (node.x - destX) * 0.3;
                     const midY = node.y + (destY - node.y) * 0.3;
 
+                    ctx.strokeStyle = `rgba(255, 255, 255, ${0.2 * lp})`;
+                    ctx.lineWidth = 0.7;
                     ctx.beginPath();
                     ctx.moveTo(node.x, node.y);
-                    const p1 = Math.min(1, lineProgress * 3);
+                    const p1 = Math.min(1, lp * 3);
                     ctx.lineTo(node.x + (midX - node.x) * p1, node.y + (midY - node.y) * p1);
-                    if (lineProgress > 0.33) {
-                        const p2 = Math.min(1, (lineProgress - 0.33) * 3);
-                        ctx.lineTo(midX + (destX + (isMobile ? 15 : 40) - midX) * p2, midY + (destY - midY) * p2);
+                    if (lp > 0.33) {
+                        const p2 = Math.min(1, (lp - 0.33) * 3);
+                        ctx.lineTo(midX + (destX + (isMobile ? 18 : 44) - midX) * p2, midY + (destY - midY) * p2);
                     }
-                    if (lineProgress > 0.66) {
-                        const p3 = Math.min(1, (lineProgress - 0.66) * 3);
-                        ctx.lineTo(destX + (isMobile ? 15 : 40) - (isMobile ? 15 : 40) * p3, destY);
+                    if (lp > 0.66) {
+                        const p3 = Math.min(1, (lp - 0.66) * 3);
+                        ctx.lineTo(destX + (isMobile ? 18 : 44) - (isMobile ? 18 : 44) * p3, destY);
                     }
                     ctx.stroke();
 
-                    if (lineProgress > 0.9) {
-                        ctx.fillStyle = `rgba(255, 255, 255, ${0.6 * (lineProgress - 0.9) * 10})`;
+                    if (lp > 0.85) {
+                        const textAlpha = Math.min(1, (lp - 0.85) * 6.67);
+                        ctx.fillStyle = `rgba(255, 255, 255, ${0.8 * textAlpha})`;
                         ctx.textAlign = 'right';
-                        ctx.fillText(label.toUpperCase(), destX - 5, destY + 2);
+                        ctx.fillText(label.toUpperCase(), destX - 6, destY + (isMobile ? 3 : 5));
                         ctx.textAlign = 'left';
                     }
                 });
