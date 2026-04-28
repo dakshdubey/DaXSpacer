@@ -151,6 +151,7 @@ export default function Aurora(props: AuroraProps) {
         gl.canvas.style.height = '100%';
         gl.canvas.style.backgroundColor = 'transparent';
 
+        // eslint-disable-next-line prefer-const
         let program: Program;
 
         function resize() {

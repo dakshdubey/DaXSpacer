@@ -288,6 +288,7 @@ export default function SpacerRadar({ scrollProgress }: SpacerRadarProps) {
             container?.removeEventListener('click', handleClick);
             cancelAnimationFrame(animationFrameId);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
