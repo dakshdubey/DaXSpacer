@@ -124,7 +124,7 @@ export default function SpacerHome() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {['Workshops', 'Courses', 'Studio Programs'].map((title, i) => (
                         <div key={title} className="p-8 border border-white/10 flex flex-col gap-12 group hover:border-[var(--primary)]/50 transition-all cursor-pointer relative overflow-hidden">
-                            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-30 transition-opacity">
+                            <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-40 transition-opacity duration-300">
                                 <span className="text-8xl font-black">{i + 1}</span>
                             </div>
                             <div className="flex flex-col gap-4 relative z-10">
