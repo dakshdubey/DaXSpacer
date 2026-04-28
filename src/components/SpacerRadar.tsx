@@ -127,7 +127,7 @@ export default function SpacerRadar({ scrollProgress }: SpacerRadarProps) {
             centerX = width / 2;
             centerY = height / 2;
             // Responsive radius calculation
-            maxRadius = isMobile ? Math.min(width * 0.35, height * 0.35) : Math.min(width * 0.42, height * 0.42);
+            maxRadius = isMobile ? Math.min(width * 0.30, height * 0.30) : Math.min(width * 0.36, height * 0.36);
         };
 
         const draw = (time: number) => {
