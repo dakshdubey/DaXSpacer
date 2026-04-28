@@ -42,7 +42,7 @@ export default function SpacerHome() {
                     transition={{ duration: 1 }}
                     className="mb-8"
                 >
-                    <span className="text-[10px] uppercase tracking-[0.6em] font-bold text-[var(--primary)] border-l-2 border-[var(--primary)] pl-4">The Future of Upskilling</span>
+                    <span className="text-[10px] uppercase tracking-[0.6em] font-bold text-white border-l-2 border-white pl-4">The Future of Upskilling</span>
                 </motion.div>
 
                 <motion.h1
