@@ -257,9 +257,9 @@ export default function SpacerRadar({ scrollProgress }: SpacerRadarProps) {
                     if (lp > 0.85) {
                         const textAlpha = Math.min(1, (lp - 0.85) * 6.67);
                         ctx.fillStyle = `rgba(255, 255, 255, ${0.8 * textAlpha})`;
-                        ctx.textAlign = 'right';
-                        ctx.fillText(label.toUpperCase(), destX - 6, destY + (isMobile ? 3 : 5));
+                        // Always render left-aligned from a safe margin so text never clips off left edge
                         ctx.textAlign = 'left';
+                        ctx.fillText(label.toUpperCase(), isMobile ? 6 : 8, destY + (isMobile ? 3 : 5));
                     }
                 });
             }
