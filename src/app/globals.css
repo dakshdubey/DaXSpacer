@@ -10,6 +10,15 @@
   --highlight: #F0E100;
   --accent-da: var(--highlight);
   --accent-spacer: var(--primary);
+
+  /* Spacer Deep Space Palette */
+  --spacer-bg-dark: #030A2C;
+  --spacer-bg-deep: #0A1051;
+  --spacer-bg-card: #0A0F2E;
+  --spacer-accent-pink: #F897FE;
+  --spacer-accent-purple: #935AF0;
+  --spacer-accent-blue: #483ACC;
+  --spacer-border: rgba(255, 255, 255, 0.08);
 }
 
 *,

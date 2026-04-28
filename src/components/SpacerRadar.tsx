@@ -85,6 +85,7 @@ export default function SpacerRadar({ scrollProgress }: SpacerRadarProps) {
         let centerX = 0;
         let centerY = 0;
         let maxRadius = 0;
+        let isMobile = false;
 
         const numBars = 32;
         const waveform = Array.from({ length: numBars }, () => Math.random());
@@ -110,9 +111,11 @@ export default function SpacerRadar({ scrollProgress }: SpacerRadarProps) {
             canvas.width = width * 2;
             canvas.height = height * 2;
             ctx.scale(2, 2);
+            isMobile = width < 768;
             centerX = width / 2;
             centerY = height / 2;
-            maxRadius = Math.min(width * 0.42, height * 0.42);
+            // Responsive radius calculation
+            maxRadius = isMobile ? Math.min(width * 0.35, height * 0.35) : Math.min(width * 0.42, height * 0.42);
         };
 
         const draw = (time: number) => {
@@ -149,8 +152,9 @@ export default function SpacerRadar({ scrollProgress }: SpacerRadarProps) {
                 ctx.globalAlpha = nodeOpacity;
                 if (isHighlight) {
                     const pulse = (Math.sin(time * 0.003) + 1) / 2;
+                    const pr = isMobile ? 6 : 10;
                     ctx.beginPath();
-                    ctx.arc(node.x, node.y, 10 + pulse * 8, 0, Math.PI * 2);
+                    ctx.arc(node.x, node.y, pr + pulse * 8, 0, Math.PI * 2);
                     ctx.strokeStyle = node.color;
                     ctx.lineWidth = 2;
                     ctx.stroke();
@@ -159,46 +163,42 @@ export default function SpacerRadar({ scrollProgress }: SpacerRadarProps) {
                     ctx.fillStyle = node.color;
                 }
                 ctx.beginPath();
-                ctx.arc(node.x, node.y, isHighlight ? 6 : 4, 0, Math.PI * 2);
+                ctx.arc(node.x, node.y, isHighlight ? (isMobile ? 4 : 6) : (isMobile ? 2 : 4), 0, Math.PI * 2);
                 ctx.fill();
                 ctx.globalAlpha = 1;
             }
 
             // Draw ANimated Leader Lines with "Z-Turn" (Dogleg)
-            if (easedDp > 0.4) {
+            // Reduce or hide based on screen width to avoid clutter
+            if (easedDp > 0.4 && width > 480) {
                 const lineProgress = Math.min(1, (easedDp - 0.4) / 0.6);
                 ctx.strokeStyle = `rgba(255, 255, 255, ${0.15 * lineProgress})`;
                 ctx.lineWidth = 0.5;
-                ctx.font = '10px monospace';
+                ctx.font = isMobile ? '6px monospace' : '10px monospace';
 
-                // Top Right: [Node] -> [DiagonalMid] -> [HorizontalEnd]
+                // Top Right
                 leaderLabels.topRight.forEach((label, i) => {
                     const node = nodes[i + 1];
-                    const destX = width - 120;
-                    const destY = 80 + i * 25;
+                    const destX = width - (isMobile ? 60 : 120);
+                    const destY = (isMobile ? 30 : 80) + i * (isMobile ? 12 : 25);
 
-                    const midX = node.x + (destX - node.x) * 0.3; // Initial breakout
+                    const midX = node.x + (destX - node.x) * 0.3;
                     const midY = node.y + (destY - node.y) * 0.3;
 
                     ctx.beginPath();
                     ctx.moveTo(node.x, node.y);
-
-                    // Draw first segment
                     const p1 = Math.min(1, lineProgress * 3);
                     ctx.lineTo(node.x + (midX - node.x) * p1, node.y + (midY - node.y) * p1);
 
-                    // Draw second segment (The Z-turn / bend)
                     if (lineProgress > 0.33) {
                         const p2 = Math.min(1, (lineProgress - 0.33) * 3);
-                        ctx.lineTo(midX + (destX - 40 - midX) * p2, midY + (destY - midY) * p2);
+                        ctx.lineTo(midX + (destX - (isMobile ? 15 : 40) - midX) * p2, midY + (destY - midY) * p2);
                     }
 
-                    // Draw final horizontal segment
                     if (lineProgress > 0.66) {
                         const p3 = Math.min(1, (lineProgress - 0.66) * 3);
-                        ctx.lineTo(destX - 40 + 40 * p3, destY);
+                        ctx.lineTo(destX - (isMobile ? 15 : 40) + (isMobile ? 15 : 40) * p3, destY);
                     }
-
                     ctx.stroke();
 
                     if (lineProgress > 0.9) {
@@ -207,31 +207,27 @@ export default function SpacerRadar({ scrollProgress }: SpacerRadarProps) {
                     }
                 });
 
-                // Bottom Left: [Node] -> [DiagonalMid] -> [HorizontalEnd]
+                // Bottom Left
                 leaderLabels.bottomLeft.forEach((label, i) => {
                     const node = nodes[nodes.length - 1 - i];
-                    const destX = 120;
-                    const destY = height - 150 - i * 25;
+                    const destX = (isMobile ? 60 : 120);
+                    const destY = height - (isMobile ? 60 : 150) - i * (isMobile ? 12 : 25);
 
                     const midX = node.x - (node.x - destX) * 0.3;
                     const midY = node.y + (destY - node.y) * 0.3;
 
                     ctx.beginPath();
                     ctx.moveTo(node.x, node.y);
-
                     const p1 = Math.min(1, lineProgress * 3);
                     ctx.lineTo(node.x + (midX - node.x) * p1, node.y + (midY - node.y) * p1);
-
                     if (lineProgress > 0.33) {
                         const p2 = Math.min(1, (lineProgress - 0.33) * 3);
-                        ctx.lineTo(midX + (destX + 40 - midX) * p2, midY + (destY - midY) * p2);
+                        ctx.lineTo(midX + (destX + (isMobile ? 15 : 40) - midX) * p2, midY + (destY - midY) * p2);
                     }
-
                     if (lineProgress > 0.66) {
                         const p3 = Math.min(1, (lineProgress - 0.66) * 3);
-                        ctx.lineTo(destX + 40 - 40 * p3, destY);
+                        ctx.lineTo(destX + (isMobile ? 15 : 40) - (isMobile ? 15 : 40) * p3, destY);
                     }
-
                     ctx.stroke();
 
                     if (lineProgress > 0.9) {
@@ -245,9 +241,9 @@ export default function SpacerRadar({ scrollProgress }: SpacerRadarProps) {
 
             // Draw center waveform
             if (easedDp > 0.2) {
-                const waveformWidth = maxRadius * 1.4;
+                const waveformWidth = maxRadius * (isMobile ? 1.1 : 1.4);
                 const barWidth = waveformWidth / numBars;
-                const maxBarHeight = maxRadius * 0.45;
+                const maxBarHeight = maxRadius * (isMobile ? 0.3 : 0.45);
                 const startX = centerX - waveformWidth / 2;
                 const waveDp = Math.min(1, (easedDp - 0.2) / 0.8);
                 ctx.fillStyle = `rgba(255, 255, 255, ${0.6 * waveDp})`;
@@ -257,7 +253,7 @@ export default function SpacerRadar({ scrollProgress }: SpacerRadarProps) {
                     const bell = Math.sin((i / (numBars - 1)) * Math.PI);
                     const h = waveform[i] * maxBarHeight * bell * waveDp;
                     ctx.beginPath();
-                    ctx.roundRect(startX + i * barWidth + 1, centerY - h, barWidth - 2, h * 2, 2);
+                    ctx.roundRect(startX + i * barWidth + 1, centerY - h, barWidth - 2, h * 2, 1);
                     ctx.fill();
                 }
             }
@@ -271,9 +267,10 @@ export default function SpacerRadar({ scrollProgress }: SpacerRadarProps) {
             const clickX = e.clientX - rect.left;
             const clickY = e.clientY - rect.top;
             let hit = -1;
+            const hitZone = isMobile ? 30 : 50;
             for (let i = 0; i < nodes.length; i++) {
                 const node = nodes[i];
-                if (Math.sqrt((clickX - node.x) ** 2 + (clickY - node.y) ** 2) < 50) { hit = i; break; }
+                if (Math.sqrt((clickX - node.x) ** 2 + (clickY - node.y) ** 2) < hitZone) { hit = i; break; }
             }
             if (hit !== -1) {
                 targetIdxRef.current = hit;
@@ -296,20 +293,20 @@ export default function SpacerRadar({ scrollProgress }: SpacerRadarProps) {
     return (
         <div
             ref={containerRef}
-            className="w-full max-w-none aspect-video relative mx-auto"
+            className="w-full max-w-none aspect-square md:aspect-video relative mx-auto"
         >
             <canvas ref={canvasRef} className="w-full h-full block cursor-pointer" />
 
             {/* Center Telemetry Display */}
             {showTelemetry && activeTelemetry && (
                 <div
-                    className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#3A334B]/85 backdrop-blur-lg border border-white/10 p-6 rounded-lg shadow-2xl shadow-black/60 transition-all flex flex-col items-center duration-300 ${flicker ? 'opacity-50 scale-95' : 'opacity-100 scale-100'}`}
+                    className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#3A334B]/85 backdrop-blur-lg border border-white/10 p-3 md:p-6 rounded-lg shadow-2xl shadow-black/60 transition-all flex flex-col items-center duration-300 ${flicker ? 'opacity-50 scale-95' : 'opacity-100 scale-100'}`}
                     style={{ transform: 'translate(-50%, -50%) translateZ(60px)' }}
                 >
-                    <p className="text-[20px] md:text-[36px] font-outfit font-bold text-white text-center mb-1">
+                    <p className="text-[14px] md:text-[36px] font-outfit font-bold text-white text-center mb-1 leading-tight">
                         {activeTelemetry.title}
                     </p>
-                    <p className="text-[12px] md:text-[14px] font-mono font-bold text-[var(--primary)] uppercase whitespace-nowrap tracking-[0.3em]">
+                    <p className="text-[8px] md:text-[14px] font-mono font-bold text-[var(--primary)] uppercase whitespace-nowrap tracking-[0.2em] md:tracking-[0.3em]">
                         {activeTelemetry.subtitle}
                     </p>
                 </div>

@@ -58,14 +58,14 @@ export default function TransitionOverlay() {
     };
 
     return (
-        <div className="flex-1 flex relative gateway-ui">
+        <div className="flex-1 flex flex-col md:flex-row relative gateway-ui">
 
             {/* LEFT ZONE: DA*/}
             <div
                 onMouseEnter={() => !selected && setHoveredZone('DA')}
                 onMouseLeave={() => !selected && setHoveredZone(null)}
                 onClick={() => !selected && handleChoice('DA')}
-                className={`flex-1 flex flex-col items-center justify-center group cursor-pointer pointer-events-auto transition-all duration-1000 ${selected === 'SPACER' ? 'opacity-0' : ''}`}
+                className={`flex-1 flex flex-col items-center justify-center group cursor-pointer pointer-events-auto transition-all duration-1000 border-b md:border-b-0 md:border-r border-white/5 ${selected === 'SPACER' ? 'opacity-0' : ''}`}
             >
                 <motion.div
                     animate={{

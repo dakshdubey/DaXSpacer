@@ -28,12 +28,12 @@ export default function Navbar() {
     const currentNav = isDA ? daNav : spacerNav;
 
     return (
-        <nav className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-8 py-6 mix-blend-difference">
+        <nav className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-4 md:px-8 py-4 md:py-6 bg-black/5 backdrop-blur-sm transition-all duration-300">
             <Link href="/" className={`text-xl font-outfit font-bold tracking-tighter ${logoColor}`}>
                 {isDA ? 'DA' : 'SPACER'}
             </Link>
 
-            <div className="flex items-center gap-8">
+            <div className="flex items-center gap-4 md:gap-8 overflow-x-auto no-scrollbar">
                 {currentNav.map((item) => (
                     <Link
                         key={item.name}

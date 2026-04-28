@@ -79,7 +79,7 @@ export default function GatewayPage() {
                   initial={{ opacity: 0, scale: 1.05 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.8, delay: 0.2 }}
-                  className="flex flex-col items-center"
+                  className="flex flex-col md:flex-row items-center"
                 >
                   <button
                     onClick={handleEnter}
