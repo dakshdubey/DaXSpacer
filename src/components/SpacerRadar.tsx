@@ -32,28 +32,40 @@ export default function SpacerRadar({ scrollProgress }: SpacerRadarProps) {
 
     const colors = ['#ffffff', '#ff4d4d', '#4dff4d', '#b366ff', '#ffa64d'];
     const spacerInfoData = [
-        { title: '1500+', subtitle: 'STUDENTS EMPOWERED' },
-        { title: '30+', subtitle: 'INDUSTRY MENTORS' },
-        { title: '98%', subtitle: 'CONFIDENCE BOOST' },
-        { title: '03+', subtitle: 'CORE PROGRAMS' },
-        { title: 'LIVE', subtitle: 'STUDIO SIMULATIONS' },
-        { title: '100%', subtitle: 'OUTPUT DRIVEN' },
-        { title: 'GLOBAL', subtitle: 'NETWORK ACCESS' },
-        { title: 'AI', subtitle: 'EMPOWERED WORKFLOWS' },
-        { title: '5+', subtitle: 'WORKSHOP MODULES' },
-        { title: 'COMPUTATIONAL', subtitle: 'DESIGN THINKING' },
-        { title: 'ENVIRONMENTAL', subtitle: 'INTELLIGENCE' },
-        { title: 'ADVANCED', subtitle: 'TECH INTEGRATION' },
-        { title: 'PORTFOLIO', subtitle: 'GRADE RESULTS' },
-        { title: 'PRACTICAL', subtitle: 'MASTERY FOCUS' },
-        { title: '0%', subtitle: 'THEORY, 100% ACTION' },
-        { title: 'NEW', subtitle: 'UPCOMING BATCH INTAKE' }
-    ];
+    { title: '1500+', subtitle: 'STUDENTS EMPOWERED' },
+    { title: '2024', subtitle: 'FOUNDED YEAR' },
+    { title: 'STUDIO', subtitle: 'BASED LEARNING' },
+    { title: 'REAL', subtitle: 'WORKFLOWS' },
+    { title: 'OUTPUT', subtitle: 'DRIVEN PROGRAMS' },
+    { title: 'LIVE', subtitle: 'WORKSHOPS & SESSIONS' },
+    { title: 'PORTFOLIO', subtitle: 'GRADE OUTCOMES' },
+    { title: 'AI + TECH', subtitle: 'INTEGRATION' },
+    { title: 'COMPUTATIONAL', subtitle: 'DESIGN THINKING' },
+    { title: 'ENVIRONMENTAL', subtitle: 'SIMULATION' },
+    { title: 'AEC', subtitle: 'INDUSTRY FOCUS' }, // Architecture, Engineering, Construction
+    { title: 'GLOBAL', subtitle: 'LEARNING ECOSYSTEM' },
+    { title: 'MENTOR', subtitle: 'GUIDED PROGRAMS' },
+    { title: 'PRACTICAL', subtitle: 'MASTERY MODEL' },
+    { title: '0%', subtitle: 'PASSIVE LEARNING' },
+    { title: '100%', subtitle: 'HANDS-ON EXECUTION' }
+];
 
     const leaderLabels = {
-        topRight: ['AI Sync', 'Studio Engine', 'Neural Mapping', 'Data Telemetry', 'API Hub'],
-        bottomLeft: ['Practical Mastery', 'Industry Ready', 'Portfolio Grade', 'Studio Workflow', 'Ecosystem']
-    };
+    topRight: [
+        'Studio Workflow',
+        'AI Integration',
+        'Computational Design',
+        'Environmental Simulation',
+        'Data-Driven Design'
+    ],
+    bottomLeft: [
+        'Portfolio Outcomes',
+        'Industry Ready Skills',
+        'Real Project Simulation',
+        'Mentor Feedback Loop',
+        'Built Environment Ecosystem'
+    ]
+};
 
     useMotionValueEvent(scrollProgress, "change", (latest) => {
         if (latest > 0.05 && !showTelemetry) setShowTelemetry(true);
