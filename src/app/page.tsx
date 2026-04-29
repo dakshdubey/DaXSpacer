@@ -12,6 +12,11 @@ export default function GatewayPage() {
   const [entered, setEntered] = useState(false);
 
   useEffect(() => {
+    if (sessionStorage.getItem('gateway_entered')) {
+      setEntered(true);
+      setLoading(false);
+      return;
+    }
     const timer = setTimeout(() => setLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
@@ -19,6 +24,7 @@ export default function GatewayPage() {
   const handleEnter = () => {
     // Trigger global sound toggle
     window.dispatchEvent(new Event('force-play-sound'));
+    sessionStorage.setItem('gateway_entered', 'true');
 
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -48,7 +54,7 @@ export default function GatewayPage() {
   };
 
   return (
-    <main className="relative bg-black select-none overflow-x-hidden min-h-screen">
+    <main className="relative bg-[#111111] select-none overflow-x-hidden min-h-screen">
       {/* Anime.js Grid Transition Experience */}
       <AnimeStaggerGrid entered={entered} />
 

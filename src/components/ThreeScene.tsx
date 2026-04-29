@@ -91,7 +91,7 @@ export default function ThreeScene() {
             rafId = requestAnimationFrame(animate);
 
             // Dark BG fill
-            ctx.fillStyle = '#191919';
+            ctx.fillStyle = '#030005ff';
             ctx.fillRect(0, 0, width, height);
 
             drawGrid();
