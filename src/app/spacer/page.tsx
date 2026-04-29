@@ -85,7 +85,7 @@ export default function SpacerHome() {
                             <motion.div
                                 key={phase.id}
                                 style={{ opacity: phase.opacity }}
-                                className="absolute inset-0 flex flex-col items-center justify-start pt-8 px-12 text-center"
+                                className="absolute inset-0 flex flex-col items-center justify-start pt-32 md:pt-40 px-12 text-center"
                             >
                                 <span className="text-[10px] uppercase tracking-[0.8em] text-[var(--primary)] mb-4">Phase 0{phase.id}</span>
                                 <h3 className="text-xl md:text-3xl font-outfit font-bold opacity-30">

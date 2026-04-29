@@ -1,7 +1,7 @@
 'use client';
 
 import Navbar from "@/components/Navbar";
-import Aurora from "@/components/Aurora";
+import DarkVeil from "@/components/DarkVeil";
 
 export default function SpacerLayout({
     children,
@@ -9,37 +9,32 @@ export default function SpacerLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div
-            className="min-h-screen text-white selection:bg-primary selection:text-background relative"
-            style={{
-                background: `
-                    radial-gradient(ellipse 100% 80% at 50% 50%, #0A1051 0%, #06094A 50%, #03042C 100%)
-                `,
-            }}
-        >
-            {/* Aurora background layer — fixed full viewport */}
+        <div className="min-h-screen text-white selection:bg-primary selection:text-background relative bg-black">
+            {/* DarkVeil — hero section only, scrolls away naturally */}
             <div
                 aria-hidden="true"
                 style={{
-                    position: 'fixed',
+                    position: 'absolute',
                     top: 0,
                     left: 0,
-                    width: '100vw',
+                    width: '100%',
                     height: '100vh',
                     pointerEvents: 'none',
                     zIndex: 0,
                     overflow: 'hidden',
                 }}
             >
-                <Aurora
-                    colorStops={["#F897FE", "#935AF0", "#483ACC"]}
-                    blend={0.5}
-                    amplitude={1.0}
-                    speed={1}
+                <DarkVeil
+                    hueShift={0}
+                    noiseIntensity={0}
+                    scanlineIntensity={0}
+                    speed={0.5}
+                    scanlineFrequency={0}
+                    warpAmount={0}
                 />
             </div>
 
-            {/* All content above aurora */}
+            {/* All content above DarkVeil */}
             <div className="relative z-10">
                 <Navbar />
                 <main className="pt-24 px-8 md:px-16 lg:px-24 pb-20">
@@ -50,7 +45,7 @@ export default function SpacerLayout({
                 <footer className="border-t border-primary/10 px-8 md:px-16 lg:px-24 py-16 bg-gradient-to-b from-transparent to-primary/5">
                     <div className="flex flex-col lg:flex-row justify-between gap-16">
                         <div className="max-w-md">
-                            <h3 className="font-outfit font-bold text-2xl mb-6 tracking-tighter text-primary">SPACER</h3>
+                            <h3 className="font-outfit font-bold text-2xl mb-6 tracking-tighter text-white">SPACER</h3>
                             <p className="text-sm tracking-wide font-light opacity-60 leading-relaxed">
                                 The bridge between architecture education and real-world practice. Empowering the next generation of designers with industry-ready workflows.
                             </p>
@@ -67,7 +62,7 @@ export default function SpacerLayout({
 
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-12 lg:gap-24">
                             <div className="flex flex-col gap-6">
-                                <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-primary">Programs</span>
+                                <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-white">Programs</span>
                                 <div className="flex flex-col gap-3">
                                     <a href="/spacer/programs?type=workshop" className="text-xs tracking-wider opacity-60 hover:opacity-100 hover:text-primary transition-all">Workshops</a>
                                     <a href="/spacer/programs?type=course" className="text-xs tracking-wider opacity-60 hover:opacity-100 hover:text-primary transition-all">Courses</a>
@@ -76,7 +71,7 @@ export default function SpacerLayout({
                             </div>
 
                             <div className="flex flex-col gap-6">
-                                <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-primary">Platform</span>
+                                <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-white">Platform</span>
                                 <div className="flex flex-col gap-3">
                                     <a href="/spacer/about" className="text-xs tracking-wider opacity-60 hover:opacity-100 hover:text-primary transition-all">Vision</a>
                                     <a href="/spacer/contact" className="text-xs tracking-wider opacity-60 hover:opacity-100 hover:text-primary transition-all">Enrollment</a>
@@ -85,7 +80,7 @@ export default function SpacerLayout({
                             </div>
 
                             <div className="flex flex-col gap-6">
-                                <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-primary">Community</span>
+                                <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-white">Community</span>
                                 <div className="flex flex-col gap-3">
                                     <a href="/" className="text-xs tracking-wider opacity-60 hover:opacity-100 hover:text-primary transition-all italic">Go to Gateway</a>
                                     <a href="#" className="text-xs tracking-wider opacity-60 hover:opacity-100 hover:text-primary transition-all">Discord</a>

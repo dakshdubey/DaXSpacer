@@ -50,22 +50,24 @@ export default function SpacerRadar({ scrollProgress }: SpacerRadarProps) {
         { title: '100%', subtitle: 'HANDS-ON EXECUTION' }
     ];
 
-    const leaderLabels = {
-        topRight: [
-            'Studio Workflow',
-            'AI Integration',
-            'Computational Design',
-            'Environmental Simulation',
-            'Data-Driven Design'
-        ],
-        bottomLeft: [
-            'Portfolio Outcomes',
-            'Industry Ready Skills',
-            'Real Project Simulation',
-            'Mentor Feedback Loop',
-            'Built Environment Ecosystem'
-        ]
-    };
+    const circularLabels = [
+        'System Initialization',
+        'Studio Workflow',
+        'AI Integration',
+        'Computational Design',
+        'Environmental Simulation',
+        'Data-Driven Design',
+        'Workflow Execution',
+        'Performance Analysis',
+        'System Calibration',
+        'Built Environment Ecosystem',
+        'Mentor Feedback Loop',
+        'Real Project Simulation',
+        'Industry Ready Skills',
+        'Portfolio Outcomes',
+        'Global Knowledge Sync',
+        'Telemetry Complete'
+    ];
 
     useMotionValueEvent(scrollProgress, "change", (latest) => {
         if (latest > 0.05 && !showTelemetry) setShowTelemetry(true);
@@ -180,27 +182,27 @@ export default function SpacerRadar({ scrollProgress }: SpacerRadarProps) {
                 ctx.globalAlpha = 1;
             }
 
-            // Draw Animated Leader Lines — each label reveals one-by-one as scroll progresses
+            // Draw Animated Leader Line for ONE active node at a time
             if (width > 480) {
-                // Each label gets its own staggered threshold (0.08 apart), so they pop in sequentially
-                const LABEL_STAGGER = 0.08;
-                const LABEL_START = 0.35; // first label starts drawing at 35% scroll
-                ctx.font = isMobile ? '8px monospace' : '13px monospace';
+                ctx.font = isMobile ? '10px monospace' : '16px monospace';
+                const activeIdx = targetIdxRef.current;
+                const node = nodes[activeIdx];
+                const label = circularLabels[activeIdx];
 
-                // ── Top Right labels ──
-                leaderLabels.topRight.forEach((label, i) => {
-                    const labelStart = LABEL_START + i * LABEL_STAGGER;
-                    if (easedDp < labelStart) return; // not yet revealed
+                // Local progress within this node's scroll segment
+                const exactVal = currentP * 15.99;
+                let rawLp = exactVal - activeIdx;
+                // Double the speed so it draws fully halfway through the scroll period of this node
+                const lp = Math.max(0, Math.min(1, rawLp * 2));
 
-                    const lp = Math.min(1, (easedDp - labelStart) / 0.18); // each label takes 18% of scroll to fully draw
-
-                    const node = nodes[i + 1];
-                    const destX = width - (isMobile ? 70 : 150);
-                    const destY = (isMobile ? 35 : 90) + i * (isMobile ? 16 : 32);
+                if (lp > 0) {
+                    const isRight = node.x >= centerX;
+                    const destX = isRight ? width - (isMobile ? 70 : 150) : (isMobile ? 6 : 8);
+                    const destY = (isMobile ? 35 : 90) + (activeIdx % 8) * (isMobile ? 16 : 32);
                     const midX = node.x + (destX - node.x) * 0.3;
                     const midY = node.y + (destY - node.y) * 0.3;
 
-                    ctx.strokeStyle = `rgba(255, 255, 255, ${0.2 * lp})`;
+                    ctx.strokeStyle = `rgba(255, 255, 255, ${0.4 * lp})`;
                     ctx.lineWidth = 0.7;
                     ctx.beginPath();
                     ctx.moveTo(node.x, node.y);
@@ -208,60 +210,23 @@ export default function SpacerRadar({ scrollProgress }: SpacerRadarProps) {
                     ctx.lineTo(node.x + (midX - node.x) * p1, node.y + (midY - node.y) * p1);
                     if (lp > 0.33) {
                         const p2 = Math.min(1, (lp - 0.33) * 3);
-                        ctx.lineTo(midX + (destX - (isMobile ? 18 : 44) - midX) * p2, midY + (destY - midY) * p2);
+                        const anchorX = isRight ? (destX - (isMobile ? 18 : 44)) : (destX + (isMobile ? 18 : 44));
+                        ctx.lineTo(midX + (anchorX - midX) * p2, midY + (destY - midY) * p2);
                     }
                     if (lp > 0.66) {
                         const p3 = Math.min(1, (lp - 0.66) * 3);
-                        ctx.lineTo(destX - (isMobile ? 18 : 44) + (isMobile ? 18 : 44) * p3, destY);
+                        const anchorX = isRight ? (destX - (isMobile ? 18 : 44)) : (destX + (isMobile ? 18 : 44));
+                        ctx.lineTo(anchorX + (isRight ? 1 : -1) * (isMobile ? 18 : 44) * p3, destY);
                     }
                     ctx.stroke();
 
                     if (lp > 0.85) {
                         const textAlpha = Math.min(1, (lp - 0.85) * 6.67);
-                        ctx.fillStyle = `rgba(255, 255, 255, ${0.8 * textAlpha})`;
+                        ctx.fillStyle = `rgba(255, 255, 255, ${textAlpha})`;
                         ctx.textAlign = 'left';
-                        ctx.fillText(label.toUpperCase(), destX + 6, destY + (isMobile ? 3 : 5));
+                        ctx.fillText(label.toUpperCase(), isRight ? destX + 6 : destX, destY + (isMobile ? 4 : 6));
                     }
-                });
-
-                // ── Bottom Left labels ──
-                leaderLabels.bottomLeft.forEach((label, i) => {
-                    // Offset bottom-left by half a stagger so they interleave nicely
-                    const labelStart = LABEL_START + 0.04 + i * LABEL_STAGGER;
-                    if (easedDp < labelStart) return;
-
-                    const lp = Math.min(1, (easedDp - labelStart) / 0.18);
-
-                    const node = nodes[nodes.length - 1 - i];
-                    const destX = (isMobile ? 70 : 150);
-                    const destY = height - (isMobile ? 65 : 170) - i * (isMobile ? 16 : 32);
-                    const midX = node.x - (node.x - destX) * 0.3;
-                    const midY = node.y + (destY - node.y) * 0.3;
-
-                    ctx.strokeStyle = `rgba(255, 255, 255, ${0.2 * lp})`;
-                    ctx.lineWidth = 0.7;
-                    ctx.beginPath();
-                    ctx.moveTo(node.x, node.y);
-                    const p1 = Math.min(1, lp * 3);
-                    ctx.lineTo(node.x + (midX - node.x) * p1, node.y + (midY - node.y) * p1);
-                    if (lp > 0.33) {
-                        const p2 = Math.min(1, (lp - 0.33) * 3);
-                        ctx.lineTo(midX + (destX + (isMobile ? 18 : 44) - midX) * p2, midY + (destY - midY) * p2);
-                    }
-                    if (lp > 0.66) {
-                        const p3 = Math.min(1, (lp - 0.66) * 3);
-                        ctx.lineTo(destX + (isMobile ? 18 : 44) - (isMobile ? 18 : 44) * p3, destY);
-                    }
-                    ctx.stroke();
-
-                    if (lp > 0.85) {
-                        const textAlpha = Math.min(1, (lp - 0.85) * 6.67);
-                        ctx.fillStyle = `rgba(255, 255, 255, ${0.8 * textAlpha})`;
-                        // Always render left-aligned from a safe margin so text never clips off left edge
-                        ctx.textAlign = 'left';
-                        ctx.fillText(label.toUpperCase(), isMobile ? 6 : 8, destY + (isMobile ? 3 : 5));
-                    }
-                });
+                }
             }
 
             // Draw center waveform

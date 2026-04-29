@@ -48,7 +48,7 @@ export default function GatewayPage() {
   };
 
   return (
-    <main className="relative bg-background select-none overflow-x-hidden min-h-screen">
+    <main className="relative bg-black select-none overflow-x-hidden min-h-screen">
       {/* Anime.js Grid Transition Experience */}
       <AnimeStaggerGrid entered={entered} />
 
