@@ -9,11 +9,20 @@ export default function TransitionOverlay() {
     const [selected, setSelected] = useState<'DA' | 'SPACER' | null>(null);
 
     useEffect(() => {
-        // Initial state before entry
-        animate('.animate-text', {
-            opacity: 0,
-            duration: 0
-        });
+        if (sessionStorage.getItem('gateway_entered')) {
+            animate('.animate-text', {
+                opacity: 1,
+                translateY: 0,
+                duration: 0
+            });
+            // We don't return here because we still might need the 'force-play-sound' listener just in case, but actually if they are already entered it won't fire. But safe to let it attach.
+        } else {
+            // Initial state before entry
+            animate('.animate-text', {
+                opacity: 0,
+                duration: 0
+            });
+        }
 
         // Entrance animation on Entry click
         const handleEnter = () => {
