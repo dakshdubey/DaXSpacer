@@ -191,7 +191,7 @@ export default function SpacerRadar({ scrollProgress }: SpacerRadarProps) {
 
                 // Local progress within this node's scroll segment
                 const exactVal = currentP * 15.99;
-                let rawLp = exactVal - activeIdx;
+                const rawLp = exactVal - activeIdx;
                 // Double the speed so it draws fully halfway through the scroll period of this node
                 const lp = Math.max(0, Math.min(1, rawLp * 2));
 
