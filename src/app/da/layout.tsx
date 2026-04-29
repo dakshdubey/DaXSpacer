@@ -8,16 +8,16 @@ export default function DALayout({
     children: React.ReactNode;
 }) {
     return (
-        <div className="min-h-screen bg-background text-white selection:bg-highlight selection:text-background">
+        <div className="min-h-screen bg-[#FEFBEC] text-[#808C89] selection:bg-[#8C6B4D] selection:text-[#FEFBEC]">
             <Navbar />
             <main className="pt-24 px-8 md:px-16 lg:px-24 pb-20">
                 {children}
             </main>
 
             {/* Editorial Footer */}
-            <footer className="border-t border-white/10 px-8 md:px-16 lg:px-24 py-12 flex flex-col md:flex-row justify-between items-start gap-12">
+            <footer className="border-t border-[#264028]/10 px-8 md:px-16 lg:px-24 py-12 flex flex-col md:flex-row justify-between items-start gap-12">
                 <div className="max-w-xs">
-                    <h3 className="font-outfit font-bold text-xl mb-4 tracking-tighter text-highlight">DA</h3>
+                    <h3 className="font-outfit font-bold text-xl mb-4 tracking-tighter text-[#8C6B4D]">DA</h3>
                     <p className="text-[10px] uppercase tracking-[0.2em] font-light opacity-50 leading-relaxed">
                         A design studio and thought ecosystem exploring the future of the built environment.
                     </p>

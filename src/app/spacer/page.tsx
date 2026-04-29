@@ -151,7 +151,7 @@ export default function SpacerHome() {
 
                 <div className="relative z-10 px-12 lg:px-24 flex flex-col lg:flex-row items-center justify-between gap-16">
                     <div className="max-w-xl">
-                        <h2 className="text-4xl md:text-5xl font-outfit font-bold tracking-tighter mb-8 italic">Where architects don’t just learn — they evolve.</h2>
+                        <h2 className="text-4xl md:text-5xl font-outfit font-bold tracking-tighter mb-8 italic">Where architects don’t just learn - they evolve.</h2>
                         <p className="opacity-60 font-light leading-relaxed">
                             Join a global community of problem-solvers using AI, computational thinking, and environmental intelligence to shape a better planet.
                         </p>

@@ -149,7 +149,7 @@ export default function GatewayPage() {
           <motion.span
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 0.8, x: 0 }}
-            className="text-[10px] uppercase tracking-[0.6em] mb-8 block text-highlight"
+            className="text-[10px] uppercase tracking-[0.6em] mb-8 block text-[#8C6B4D]"
           >
             The Foundation | DA
           </motion.span>

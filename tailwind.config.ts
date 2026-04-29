@@ -14,6 +14,13 @@ const config: Config = {
         primary: "var(--primary)",
         secondary: "var(--secondary)",
         highlight: "var(--highlight)",
+        da: {
+          bg: "#264028",
+          mid: "#5A735A",
+          slate: "#808C89",
+          light: "#FEFBEC",
+          brown: "#8C6B4D"
+        }
       },
     },
   },

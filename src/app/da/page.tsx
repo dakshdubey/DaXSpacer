@@ -26,15 +26,15 @@ export default function DAHome() {
                     <p className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-light max-w-sm leading-relaxed">
                         Design Aspirations (DA) is the philosophical foundation where design thinking is explored, questioned, and evolved.
                     </p>
-                    <div className="h-[1px] w-24 bg-white opacity-40 hidden md:block" />
+                    <div className="h-[1px] w-24 bg-[#264028] opacity-40 hidden md:block" />
                 </motion.div>
             </section>
 
             {/* Featured Explorations Section */}
             <section className="grid grid-cols-1 md:grid-cols-2 gap-12 overflow-hidden">
                 <div className="flex flex-col gap-6 group cursor-pointer">
-                    <div className="aspect-[4/5] bg-white/5 border border-white/10 overflow-hidden relative">
-                        <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-40" />
+                    <div className="aspect-[4/5] bg-[#264028]/5 border border-[#264028]/10 overflow-hidden relative">
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#FEFBEC] to-transparent opacity-60" />
                         {/* Visual Placeholder for Project */}
                         <div className="absolute inset-0 flex items-center justify-center">
                             <span className="text-[10px] tracking-[0.5em] uppercase opacity-20 group-hover:opacity-40 transition-opacity">Void Exploration 01</span>
@@ -47,8 +47,8 @@ export default function DAHome() {
                 </div>
 
                 <div className="flex flex-col gap-6 md:mt-24 group cursor-pointer">
-                    <div className="aspect-[4/5] bg-white/5 border border-white/10 overflow-hidden relative">
-                        <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-40" />
+                    <div className="aspect-[4/5] bg-[#264028]/5 border border-[#264028]/10 overflow-hidden relative">
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#FEFBEC] to-transparent opacity-60" />
                         <div className="absolute inset-0 flex items-center justify-center">
                             <span className="text-[10px] tracking-[0.5em] uppercase opacity-20 group-hover:opacity-40 transition-opacity">Spatial Logic 02</span>
                         </div>
@@ -61,13 +61,13 @@ export default function DAHome() {
             </section>
 
             {/* Philosophy Callout */}
-            <section className="py-32 border-y border-white/10">
+            <section className="py-32 border-y border-[#264028]/10">
                 <div className="max-w-2xl">
                     <span className="text-[10px] uppercase tracking-[0.5em] font-medium opacity-30 block mb-12">Perspective</span>
                     <h2 className="text-4xl md:text-5xl font-outfit font-medium tracking-tight leading-snug mb-8">
                         We believe that the future of design lies in understanding the complex interdependencies between space, technology, and human experience.
                     </h2>
-                    <a href="/da/about" className="text-[10px] uppercase tracking-[0.4em] font-bold border-b border-white pb-1 hover:opacity-60 transition-opacity">
+                    <a href="/da/about" className="text-[10px] uppercase tracking-[0.4em] font-bold border-b border-[#264028] pb-1 hover:opacity-60 transition-opacity">
                         Read Philosophy
                     </a>
                 </div>

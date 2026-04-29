@@ -9,8 +9,10 @@ export default function Navbar() {
     if (ecosystem === 'gateway') return null;
 
     const isDA = ecosystem === 'da';
-    const logoColor = isDA ? 'text-highlight' : 'text-white';
-    const accentColor = isDA ? 'bg-highlight' : 'bg-primary';
+    const logoColor = isDA ? 'text-[#264028]' : 'text-white';
+    const accentColor = isDA ? 'bg-[#8C6B4D]' : 'bg-primary';
+    const navTextColor = isDA ? 'text-[#5A735A]' : 'text-white';
+    const bgClass = isDA ? 'bg-[#FEFBEC]/90' : 'bg-black/5';
 
     const daNav = [
         { name: 'Projects', href: '/da/projects' },
@@ -28,7 +30,7 @@ export default function Navbar() {
     const currentNav = isDA ? daNav : spacerNav;
 
     return (
-        <nav className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-4 md:px-8 py-4 md:py-6 bg-black/5 backdrop-blur-sm transition-all duration-300">
+        <nav className={`fixed top-0 inset-x-0 z-50 flex items-center justify-between px-4 md:px-8 py-4 md:py-6 ${bgClass} backdrop-blur-sm transition-all duration-300`}>
             <Link href="/" className={`text-3xl md:text-4xl font-outfit font-bold tracking-tighter ${logoColor}`}>
                 {isDA ? 'DA' : 'SPACER'}
             </Link>
@@ -38,15 +40,15 @@ export default function Navbar() {
                     <Link
                         key={item.name}
                         href={item.href}
-                        className="text-[10px] uppercase tracking-[0.3em] font-light opacity-50 hover:opacity-100 transition-opacity"
+                        className={`text-[10px] uppercase tracking-[0.3em] font-semibold opacity-70 hover:opacity-100 transition-opacity ${navTextColor}`}
                     >
                         {item.name}
                     </Link>
                 ))}
-                <div className={`h-4 w-[1px] ${accentColor} opacity-20`} />
+                <div className={`h-4 w-[1px] ${accentColor} opacity-40`} />
                 <Link
                     href={isDA ? '/spacer' : '/da'}
-                    className="text-[10px] uppercase tracking-[0.3em] font-medium opacity-80 hover:opacity-100"
+                    className={`text-[10px] uppercase tracking-[0.3em] font-bold opacity-80 hover:opacity-100 ${navTextColor}`}
                 >
                     {isDA ? 'SPACER' : 'DA'}
                 </Link>
